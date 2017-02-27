@@ -19,13 +19,14 @@ public class Database { // Persistent Database Accessor
 	private static MutableProperty<UserList> userList;
 	private static MutableProperty<PrinterList> printerList;
 	
+	// TODO this breaks cross-compatibility
+	private static String storageRoot = System.getenv("APPDATA");
+	
 	private Database() {}
 	
 	static void init() { // Called by PropertyDBListener
-		// Get Windows data folder
-		String appdata = System.getenv("APPDATA");
 		// Use APPDATA/LibPrint as data storage
-		storageDirectory = new File(appdata, "LibPrint/");
+		storageDirectory = new File(storageRoot, "LibPrint/");
 		storageDirectory.mkdirs(); // Make sure it exists
 		
 		// Initialize the UserList object
