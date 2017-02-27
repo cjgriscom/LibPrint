@@ -23,10 +23,6 @@ public class PropertyDBListener implements ServletContextListener {
 	// ErrorHandler.logAll may be used to direct errors to an arbitrary stream.
 	public static final ErrorHandler<RuntimeException> pdb_handler = ErrorHandler.throwAll();
 	
-	public PropertyDBListener() {
-		Database.init();
-	}
-
 	// This runs once on startup; initialize PropertyDB
 	public void contextInitialized(ServletContextEvent c) {
 		if (PropertyDB.initialized()) {
@@ -34,6 +30,7 @@ public class PropertyDBListener implements ServletContextListener {
 		} else {
 			// Initialize DB with given I/O-cycle time
 			token = PropertyDB.initializeDB(PERIOD);
+			Database.init();
 		}
 	}
 	
