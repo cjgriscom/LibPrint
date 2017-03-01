@@ -29,22 +29,10 @@ public class TestServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter writer = response.getWriter();
-		TestWriter testWriter = new TestWriter(writer);
-		writer.println("<html><head><title>LibPrint Test Servlet</title></head><body><p>");
-		new UserTest().performTests(testWriter);
-		writer.println("</p></body></html>");
+		writer.println("<html><head><title>LibPrint Test Servlet</title></head><body><pre>");
+		new UserTest().performTests(writer);
+		writer.println("</pre></body></html>");
 		
 	}
 
-}
-
-class TestWriter {
-	PrintWriter out;
-	TestWriter(PrintWriter out) {
-		this.out = out;
-	}
-	
-	public void println(String data) {
-		out.println(data + "<br/>");
-	}
 }

@@ -1,5 +1,7 @@
 package edu.letu.libprint.test;
 
+import java.io.PrintWriter;
+
 import com.quirkygaming.propertydb.PropertyDB;
 import com.quirkygaming.propertylib.MutableProperty;
 
@@ -7,7 +9,7 @@ import edu.letu.libprint.PropertyDBListener;
 import edu.letu.libprint.db.Database;
 
 public class UserTest extends TestClass {
-	boolean addListAndRemoveUser(final TestWriter out) {
+	boolean addListAndRemoveUser(final PrintWriter out) {
 		MutableProperty<Boolean> success = MutableProperty.newProperty(false);
 		Database.accessUserList((userList) -> {
 			userList.addUser("listusertest", "password");
@@ -32,7 +34,7 @@ public class UserTest extends TestClass {
 		return success.get();
 	}
 	
-	boolean passwordTest(final TestWriter out) {
+	boolean passwordTest(final PrintWriter out) {
 		MutableProperty<Boolean> success = MutableProperty.newProperty(true);
 		Database.accessUserList((userList) -> {
 			userList.addUser("pwtest", "RealPassword");
@@ -46,7 +48,7 @@ public class UserTest extends TestClass {
 		return success.get();
 	}
 	
-	boolean retentionTest(final TestWriter out) {
+	boolean retentionTest(final PrintWriter out) {
 		MutableProperty<Boolean> success = MutableProperty.newProperty(false);
 		
 		out.println("Closing database");

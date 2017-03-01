@@ -1,9 +1,10 @@
 package edu.letu.libprint.test;
 
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
 public class TestClass {
-	boolean performTests(final TestWriter out) {
+	boolean performTests(final PrintWriter out) {
 		out.println("--- Invoking test " + getClass().getName() + " ---");
 		boolean success = true;
 		for (Method m : this.getClass().getDeclaredMethods()) {
