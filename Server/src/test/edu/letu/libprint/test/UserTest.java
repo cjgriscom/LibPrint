@@ -75,7 +75,7 @@ public class UserTest extends TestClass {
 			for (String username : userList.getUsernames()) {
 				out.println(username);
 				if (username.equals("retentiontest")) {
-					if (userList.hasPrinterAccess("retentiontest") == true && userList.hasPrinterAccess("retentiontest") == false) {
+					if (userList.hasPrinterAccess("retentiontest") == true && userList.hasUserAccess("retentiontest") == false) {
 						// Conditions match
 						out.println("Found user with correct access parameters");
 						success.set(true);
