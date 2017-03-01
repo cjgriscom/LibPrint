@@ -2,6 +2,7 @@ package edu.letu.libprint.db;
 
 import java.io.File;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import com.quirkygaming.errorlib.ErrorHandler;
 import com.quirkygaming.propertydb.PropertyDB;
@@ -56,25 +57,25 @@ public class Database { // Persistent Database Accessor
 	
 	/**
 	 * Synchronized accessor method for the database's UserList
-	 * Supply the modifier consumer with 
-	 * @param accessor A lambda expression like (userList) -> {...}
+	 * Supply the modifier function with 
+	 * @param accessor A lambda expression like (userList) -> {...return result;}
 	 * @param modify Set to true if the accessor modifies the UserList. 
 	 */
-	public static synchronized void accessUserList(Consumer<UserList> accessor, boolean modify) {
-		accessor.accept(userList.get());
+	public static synchronized <T> T accessUserList(Function<UserList, T> accessor, boolean modify) {
+		T ret = accessor.apply(userList.get());
 		if (modify) userList.update(); // Tell PropertyDB to sync the object after modification
+		return ret;
 	}
-	
 
 	/**
 	 * Synchronized accessor method for the database's PrinterList
-	 * Supply the modifier consumer with 
-	 * @param accessor A lambda expression like (printerList) -> {...}
+	 * Supply the modifier function with 
+	 * @param accessor A lambda expression like (printerList) -> {...return result;}
 	 * @param modify Set to true if the accessor modifies the PrinterList. 
 	 */
-	public static synchronized void accessPrinterList(Consumer<PrinterList> accessor, boolean modify) {
-		accessor.accept(printerList.get());
+	public static synchronized <T> T accessPrinterList(Function<PrinterList, T> accessor, boolean modify) {
+		T ret = accessor.apply(printerList.get());
 		if (modify) printerList.update(); // Tell PropertyDB to sync the object after modification
+		return ret;
 	}
-	
 }
