@@ -31,7 +31,7 @@ public class TestServlet extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		TestWriter testWriter = new TestWriter(writer);
 		writer.println("<html><head><title>LibPrint Test Servlet</title></head><body><p>");
-		
+		new UserTest().performTests(testWriter);
 		writer.println("</p></body></html>");
 		
 	}

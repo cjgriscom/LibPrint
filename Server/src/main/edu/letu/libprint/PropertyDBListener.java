@@ -16,7 +16,7 @@ import edu.letu.libprint.db.Database;
  */
 @WebListener
 public class PropertyDBListener implements ServletContextListener {
-	private static final int PERIOD = 1000; // Sync every second
+	public static final int PERIOD = 1000; // Sync every second
 	
 	public static InitializationToken token = null;
 	
