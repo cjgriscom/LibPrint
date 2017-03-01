@@ -57,6 +57,32 @@ public class Database { // Persistent Database Accessor
 	
 	/**
 	 * Synchronized accessor method for the database's UserList
+	 * Supply the modifier consumer with 
+	 * @param accessor A lambda expression like (userList) -> {...}
+	 * @param modify Set to true if the accessor modifies the UserList. 
+	 */
+	public static void accessUserList(Consumer<UserList> accessor, boolean modify) {
+		accessUserList((userList) -> {
+			accessor.accept(userList);
+			return Void.TYPE;
+		}, modify);
+	}
+
+	/**
+	 * Synchronized accessor method for the database's PrinterList
+	 * Supply the modifier consumer with 
+	 * @param accessor A lambda expression like (printerList) -> {...}
+	 * @param modify Set to true if the accessor modifies the PrinterList. 
+	 */
+	public static void accessPrinterList(Consumer<PrinterList> accessor, boolean modify) {
+		accessPrinterList((printerList) -> {
+			accessor.accept(printerList);
+			return Void.TYPE;
+		}, modify);
+	}
+
+	/**
+	 * Synchronized accessor method for the database's UserList
 	 * Supply the modifier function with 
 	 * @param accessor A lambda expression like (userList) -> {...return result;}
 	 * @param modify Set to true if the accessor modifies the UserList. 
