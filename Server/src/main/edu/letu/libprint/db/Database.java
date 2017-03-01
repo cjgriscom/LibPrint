@@ -22,7 +22,7 @@ public class Database { // Persistent Database Accessor
 	private static MutableProperty<PrinterList> printerList;
 	
 	private static String storageRoot; // TODO use a more bulletproof solution
-	static {
+	static { // Resolve the data storage root differently depending on OS
 		String os = System.getProperty("os.name");
 		if (os.startsWith("Windows")) {
 			storageRoot = System.getenv("APPDATA");
@@ -34,8 +34,12 @@ public class Database { // Persistent Database Accessor
 	
 	private Database() {}
 	
-	public static void init() { // Called by PropertyDBListener
-		// Use APPDATA/LibPrint as data storage
+	/**
+	 * Initializes the database
+	 * Called by PropertyDBListener
+	 */
+	public static void init() {
+		// Use APPDATA/.LibPrint as data storage
 		storageDirectory = new File(storageRoot, ".LibPrint/");
 		storageDirectory.mkdirs(); // Make sure it exists
 		
@@ -50,15 +54,24 @@ public class Database { // Persistent Database Accessor
 				new PrinterList(), pdb_handler);
 	}
 	
-	// Use these methods to perform synchronized read/writes
-	// Supply the modifier consumer with a lambda expression like (obj) -> {...}
-	// ---- ACCESSOR METHODS ----
-	
+	/**
+	 * Synchronized accessor method for the database's UserList
+	 * Supply the modifier consumer with 
+	 * @param accessor A lambda expression like (userList) -> {...}
+	 * @param modify Set to true if the accessor modifies the UserList. 
+	 */
 	public static synchronized void accessUserList(Consumer<UserList> accessor, boolean modify) {
 		accessor.accept(userList.get());
 		if (modify) userList.update(); // Tell PropertyDB to sync the object after modification
 	}
 	
+
+	/**
+	 * Synchronized accessor method for the database's PrinterList
+	 * Supply the modifier consumer with 
+	 * @param accessor A lambda expression like (printerList) -> {...}
+	 * @param modify Set to true if the accessor modifies the PrinterList. 
+	 */
 	public static synchronized void accessPrinterList(Consumer<PrinterList> accessor, boolean modify) {
 		accessor.accept(printerList.get());
 		if (modify) printerList.update(); // Tell PropertyDB to sync the object after modification
