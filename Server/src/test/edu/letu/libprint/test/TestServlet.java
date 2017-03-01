@@ -23,7 +23,7 @@ public class TestServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter writer = response.getWriter();
 		writer.println("<html><head><title>LibPrint Test Servlet</title></head><body><pre>");
-		new UserTest().performTests(writer);
+		new DatabaseTest().performTests(writer);
 		writer.println("</pre></body></html>");
 
 	}

@@ -8,7 +8,7 @@ import com.quirkygaming.propertylib.MutableProperty;
 import edu.letu.libprint.PropertyDBListener;
 import edu.letu.libprint.db.Database;
 
-public class UserTest extends TestClass {
+public class DatabaseTest extends TestClass {
 	boolean addListAndRemoveUser(final PrintWriter out) {
 		MutableProperty<Boolean> success = MutableProperty.newProperty(false);
 		Database.accessUserList((userList) -> {
@@ -49,8 +49,9 @@ public class UserTest extends TestClass {
 	}
 	
 	boolean retentionTest(final PrintWriter out) {
-		MutableProperty<Boolean> success = MutableProperty.newProperty(false);
-		
+		MutableProperty<Boolean> userSuccess = MutableProperty.newProperty(false);
+		MutableProperty<Boolean> printerSuccess = MutableProperty.newProperty(false);
+
 		out.println("Closing database");
 		PropertyDB.closeDatabase(PropertyDBListener.token);
 		
@@ -64,6 +65,12 @@ public class UserTest extends TestClass {
 			userList.setAccessPolicies("retentiontest", true, false);
 		}, true);
 		
+		out.println("Adding printer: retentiontest");
+		Database.accessPrinterList((printerList) -> {
+			printerList.addPrinter("retentiontest", 
+					"win_retentiontest", false, 0.75, 0.10);
+		}, true);
+		
 		out.println("Closing database");
 		PropertyDB.closeDatabase(PropertyDBListener.token);
 		
@@ -71,7 +78,7 @@ public class UserTest extends TestClass {
 		PropertyDBListener.token = PropertyDB.initializeDB(PropertyDBListener.PERIOD);
 		Database.init();
 
-		out.println("Checkign for user: retentiontest");
+		out.println("Checking for user: retentiontest");
 		Database.accessUserList((userList) -> {
 			for (String username : userList.getUsernames()) {
 				out.println(username);
@@ -79,14 +86,36 @@ public class UserTest extends TestClass {
 					if (userList.hasPrinterAccess("retentiontest") == true && userList.hasUserAccess("retentiontest") == false) {
 						// Conditions match
 						out.println("Found user with correct access parameters");
-						success.set(true);
+						userSuccess.set(true);
 					} else {
 						out.println("User has incorrect access parameters");
 					}
 				}
 			}
+			out.println("Removing user");
 			userList.removeUser("retentiontest");
 		}, true);
-		return success.get();
+		
+		out.println("Checking for printer: retentiontest");
+		Database.accessPrinterList((printerList) -> {
+			for (String printerName : printerList.getPrinterNames()) {
+				out.println(printerName);
+				if (printerName.equals("retentiontest")) {
+					if (printerList.isActive("retentiontest") == false && 
+							printerList.getWindowsPrinterName("retentiontest").equals("win_retentiontest") &&
+							printerList.getPatronPrice("retentiontest") == 0.75 && 
+							printerList.getStudentPrice("retentiontest") == 0.10) {
+						// Conditions match
+						out.println("Found printer with correct attributes");
+						printerSuccess.set(true);
+					} else {
+						out.println("Printer has incorrect attributes");
+					}
+				}
+			}
+			out.println("Removing printer");
+			printerList.removePrinter("retentiontest");
+		}, true);
+		return userSuccess.get() && printerSuccess.get();
 	}
 }

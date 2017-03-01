@@ -15,7 +15,7 @@ import edu.letu.libprint.Util;
 public class UserList implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	// User parameters, organized by userID.
+	// User parameters, organized by username.
 	// I've found this format to be more suitable for serialization
 	//      than having a separate User class.
 	
@@ -35,7 +35,6 @@ public class UserList implements Serializable {
 	 * Add a new user with default access policies
 	 * @param username A unique username
 	 * @param password Plaintext password (will be hashed)
-	 * @return the new userID, or -1 if the user already exists
 	 */
 	public void addUser(String username, char[] password) {
 		passwordHashes.put(username, Util.hashPassword(password));
