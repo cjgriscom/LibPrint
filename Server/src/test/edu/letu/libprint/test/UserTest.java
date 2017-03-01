@@ -12,7 +12,7 @@ public class UserTest extends TestClass {
 	boolean addListAndRemoveUser(final PrintWriter out) {
 		MutableProperty<Boolean> success = MutableProperty.newProperty(false);
 		Database.accessUserList((userList) -> {
-			userList.addUser("listusertest", "password");
+			userList.addUser("listusertest", "password".toCharArray());
 			out.println("Added listusertest");
 			for (String username : userList.getUsernames()) {
 				if (username.equals("listusertest")) success.set(true); // Found the test user
@@ -37,9 +37,9 @@ public class UserTest extends TestClass {
 	boolean passwordTest(final PrintWriter out) {
 		MutableProperty<Boolean> success = MutableProperty.newProperty(true);
 		Database.accessUserList((userList) -> {
-			userList.addUser("pwtest", "RealPassword");
-			boolean correctPasswordMatches = userList.passwordMatches("pwtest", "RealPassword");
-			boolean incorrectPasswordMatches = userList.passwordMatches("pwtest", "FakePassword");
+			userList.addUser("pwtest", "RealPassword".toCharArray());
+			boolean correctPasswordMatches = userList.passwordMatches("pwtest", "RealPassword".toCharArray());
+			boolean incorrectPasswordMatches = userList.passwordMatches("pwtest", "FakePassword".toCharArray());
 			out.println("correctPasswordMatches:   " + correctPasswordMatches);
 			out.println("incorrectPasswordMatches: " + incorrectPasswordMatches);
 			if (!correctPasswordMatches || incorrectPasswordMatches) success.set(false);
@@ -60,14 +60,13 @@ public class UserTest extends TestClass {
 		
 		out.println("Adding user: retentiontest");
 		Database.accessUserList((userList) -> {
-			userList.addUser("retentiontest", "testPWD");
+			userList.addUser("retentiontest", "testPWD".toCharArray());
 			userList.setAccessPolicies("retentiontest", true, false);
 		}, true);
 		
 		out.println("Closing database");
 		PropertyDB.closeDatabase(PropertyDBListener.token);
 		
-
 		out.println("Initializing database at default period");
 		PropertyDBListener.token = PropertyDB.initializeDB(PropertyDBListener.PERIOD);
 		Database.init();

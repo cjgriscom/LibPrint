@@ -37,7 +37,7 @@ public class UserList implements Serializable {
 	 * @param password Plaintext password (will be hashed)
 	 * @return the new userID, or -1 if the user already exists
 	 */
-	public void addUser(String username, String password) {
+	public void addUser(String username, char[] password) {
 		passwordHashes.put(username, Util.hashPassword(password));
 		printerAccess.put(username, false);
 		userAccess.put(username, false);
@@ -66,7 +66,7 @@ public class UserList implements Serializable {
 	 * @param username
 	 * @param password A plaintext password
 	 */
-	public void setPassword(String username, String password) {
+	public void setPassword(String username, char[] password) {
 		passwordHashes.put(username, Util.hashPassword(password));
 	}
 	
@@ -95,8 +95,8 @@ public class UserList implements Serializable {
 	 * @param password The plaintext password
 	 * @return True if the password matches
 	 */
-	public boolean passwordMatches(String username, String password) {
-		return Util.hashPassword(password).equals(passwordHashes.get(username));
+	public boolean passwordMatches(String username, char[] password) {
+		return Util.verifyPassword(password, passwordHashes.get(username));
 	}
 	
 	/**

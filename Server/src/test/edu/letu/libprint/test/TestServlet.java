@@ -15,24 +15,17 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/TestServlet")
 public class TestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public TestServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	public TestServlet() {
+		super();
+	}
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter writer = response.getWriter();
 		writer.println("<html><head><title>LibPrint Test Servlet</title></head><body><pre>");
 		new UserTest().performTests(writer);
 		writer.println("</pre></body></html>");
-		
+
 	}
 
 }
