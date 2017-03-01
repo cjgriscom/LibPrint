@@ -1,4 +1,4 @@
-package edu.letu.libprint;
+package edu.letu.libprint.db;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -6,6 +6,8 @@ import java.util.function.Consumer;
 import com.quirkygaming.errorlib.ErrorHandler;
 import com.quirkygaming.propertydb.PropertyDB;
 import com.quirkygaming.propertylib.MutableProperty;
+
+import edu.letu.libprint.PropertyDBListener;
 
 public class Database { // Persistent Database Accessor
 	
@@ -24,7 +26,7 @@ public class Database { // Persistent Database Accessor
 	
 	private Database() {}
 	
-	static void init() { // Called by PropertyDBListener
+	public static void init() { // Called by PropertyDBListener
 		// Use APPDATA/LibPrint as data storage
 		storageDirectory = new File(storageRoot, "LibPrint/");
 		storageDirectory.mkdirs(); // Make sure it exists

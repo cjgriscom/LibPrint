@@ -8,6 +8,8 @@ import com.quirkygaming.errorlib.ErrorHandler;
 import com.quirkygaming.propertydb.InitializationToken;
 import com.quirkygaming.propertydb.PropertyDB;
 
+import edu.letu.libprint.db.Database;
+
 /**
  * Application Lifecycle Listener implementation class PropertyDBListener
  *

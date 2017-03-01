@@ -1,8 +1,10 @@
-package edu.letu.libprint;
+package edu.letu.libprint.db;
 
 import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeMap;
+
+import edu.letu.libprint.Util;
 
 /**
  * This is the serialized class in which user data is stored

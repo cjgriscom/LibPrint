@@ -1,4 +1,4 @@
-package edu.letu.libprint;
+package edu.letu.libprint.db;
 
 import java.io.Serializable;
 
