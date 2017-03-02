@@ -32,15 +32,14 @@ public class RequestHandler extends HttpServlet {
 				response.setContentType("text/plain;charset=UTF-8");
 				out = response.getWriter();
 				ClientInterface.handleGetInformation(request, out);
-			} else if (requestName.equals("printPDF")) {
-				response.setContentType("text/plain;charset=UTF-8");
-				out = response.getWriter();
-				ClientInterface.handlePrintPDF(request, out);
 			} else {
+				// JSON responses
 				response.setContentType("application/json;charset=UTF-8");
 				out = response.getWriter();
 				if (requestName.equals("listQueue")) {
 					WebInterface.handleListQueue(request, out);
+				} else {
+					out.println("{}");
 				}
 				
 			}
@@ -53,7 +52,29 @@ public class RequestHandler extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String requestName;
+		PrintWriter out = null;
+
+		if ((requestName = (String) request.getParameter("request")) != null) {
+			if (requestName.equals("getInformation")) {
+				response.setContentType("text/plain;charset=UTF-8");
+				out = response.getWriter();
+				ClientInterface.handleGetInformation(request, out);
+			} else if (requestName.equals("printPDF")) {
+				response.setContentType("text/plain;charset=UTF-8");
+				out = response.getWriter();
+				ClientInterface.handlePrintPDF(request, out);
+			} else {
+				// JSON Responses
+				response.setContentType("application/json;charset=UTF-8");
+				out = response.getWriter();
+				out.println("{}");
+			}
+		} else {
+			response.setContentType("text/plain;charset=UTF-8");
+			out = response.getWriter();
+			out.println("Invalid request");
+		}
 	}
 
 }

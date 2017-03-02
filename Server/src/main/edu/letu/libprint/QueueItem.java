@@ -1,12 +1,16 @@
 package edu.letu.libprint;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class QueueItem {
 	public static enum Status {
 		Waiting, Printed, Canceled
 	}
+	
+	private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("hh:mm a");
+	private static int ID_accum = 0;
 	
 	private Status status = Status.Waiting;
 	private Date time = new Date();
@@ -17,6 +21,7 @@ public class QueueItem {
 	private int pages;
 	private String total;
 	private File location;
+	private int ID;
 	
 	public QueueItem(File location, String username, String printerName, String computer, String filename, int pages, String totalCost) {
 		this.username = username;
@@ -25,14 +30,15 @@ public class QueueItem {
 		this.filename = filename;
 		this.pages = pages;
 		this.total = totalCost;
+		ID = ID_accum++;
 	}
 	
 	public Status status() {return status;}
 	
-	@SuppressWarnings("deprecation")
 	public String asJSON() {
 		return "{" +
-				"\"time\":\"" + time.getHours() + ":" + time.getMinutes() + "\",\n" +// TODO use better API
+				"\"ID\":" + ID + ",\n" +
+				"\"time\":\"" + TIME_FORMAT.format(time) + "\",\n" +
 				"\"status\":\"" + status.name() + "\",\n" +
 				"\"username\":\"" + username + "\",\n" +
 				"\"printerName\":\"" + printerName + "\",\n" +
