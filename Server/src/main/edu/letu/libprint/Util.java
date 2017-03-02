@@ -53,6 +53,7 @@ public class Util {
 				storageRoot = new File(System.getProperty("user.home"), ".LibPrint/");
 			}
 			storageRoot.mkdirs(); // Make sure it exists
+			if (!storageRoot.exists()) throw new RuntimeException("Could not create configuration directory: " + storageRoot.getAbsolutePath());
 		}
 		return storageRoot;
 	}
