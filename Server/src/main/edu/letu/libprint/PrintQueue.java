@@ -1,23 +1,23 @@
 package edu.letu.libprint;
 
+import java.io.File;
 import java.io.PrintWriter;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import edu.letu.libprint.QueueItem.Status;
 
 public class PrintQueue {
-	public List<QueueItem> queue = new LinkedList<QueueItem>();
+	public ArrayList<QueueItem> queue = new ArrayList<QueueItem>();
 	private static final PrintQueue INSTANCE = new PrintQueue();
 	
 	private PrintQueue() {
-		queue.add(new QueueItem(null, "chandlergriscom", "Black and White", "S1", "example.doc", 5, "Free"));
-		queue.add(new QueueItem(null, "LibraryGuest1", "Color", "S3", "example.doc", 1, "$0.50"));
-		queue.add(new QueueItem(null, "LibraryGuest1", "Black and White", "S3", "example2.doc", 1, "$0.10"));
-		queue.add(new QueueItem(null, "LibraryGuest1", "Color", "S3", "example3.doc", 3, "$1.50"));
-		
+		// TODO remove examples
+		add(null, "chandlergriscom", "Black and White", "S1", "example.doc", 5, "Free");
+		add(null, "LibraryGuest1", "Color", "S3", "example.doc", 1, "$0.50");
+		add(null, "LibraryGuest1", "Black and White", "S3", "example2.doc", 1, "$0.10");
+		add(null, "LibraryGuest1", "Color", "S3", "example3.doc", 3, "$1.50");
 	}
 	
 
@@ -43,8 +43,8 @@ public class PrintQueue {
 		return ret;
 	}
 	
-	public void add(QueueItem item) {
-		queue.add(item);
+	public void add(File location, String username, String printerName, String computer, String filename, int pages, String totalCost) {
+		queue.add(new QueueItem(location, username, printerName, computer, filename, pages, totalCost, queue.size()));
 	}
 	
 	public int waitingSize() {

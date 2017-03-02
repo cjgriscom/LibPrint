@@ -174,7 +174,7 @@ public class ClientInterface {
 		}, false);
 		
 		final File queueFile = outFile;
-		PrintQueue.access((printQueue) -> {printQueue.add(new QueueItem(queueFile, username, printerName, computer, filename, count, totalCost));});
+		PrintQueue.access((printQueue) -> {printQueue.add(queueFile, username, printerName, computer, filename, count, totalCost);});
 		
 		out.println("Response: OK");
 		out.println("TotalCost: " + totalCost);

@@ -10,7 +10,6 @@ public class QueueItem {
 	}
 	
 	private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("hh:mm a");
-	private static int ID_accum = 0;
 	
 	private Status status = Status.Waiting;
 	private Date time = new Date();
@@ -23,14 +22,13 @@ public class QueueItem {
 	private File location;
 	private int ID;
 	
-	public QueueItem(File location, String username, String printerName, String computer, String filename, int pages, String totalCost) {
+	public QueueItem(File location, String username, String printerName, String computer, String filename, int pages, String totalCost, int ID) {
 		this.username = username;
 		this.printerName = printerName;
 		this.computer = computer;
 		this.filename = filename;
 		this.pages = pages;
 		this.total = totalCost;
-		ID = ID_accum++;
 	}
 	
 	public Status status() {return status;}
