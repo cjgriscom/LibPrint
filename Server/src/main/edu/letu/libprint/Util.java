@@ -23,7 +23,7 @@ public class Util {
 	 * @return Hash token
 	 */
 	public static String hashPassword(char[] plaintext) {
-		return auth.hash(plaintext); // TODO stub
+		return auth.hash(plaintext);
 	}
 	
 	/**
@@ -33,7 +33,7 @@ public class Util {
 	 * @return True if they match
 	 */
 	public static boolean verifyPassword(char[] plaintext, String hash) {
-		return auth.authenticate(plaintext, hash); // TODO stub
+		return auth.authenticate(plaintext, hash);
 	}
 	
 	/**
