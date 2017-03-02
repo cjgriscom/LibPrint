@@ -9,7 +9,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.UUID;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 
@@ -145,7 +147,8 @@ public class ClientInterface {
 		String filename;
 		
 		try {
-			outFile = savePDF(request);
+			Part filePart = request.getPart("file");
+			outFile = savePDF(filePart);
 			if (outFile == null || !outFile.exists()) {
 				printErrorResponse("An unexpected upload error occured. Please try again.", out);
 				return;
@@ -159,7 +162,7 @@ public class ClientInterface {
 			doc.close();
 			
 			if (count <= 0) throw new IOException("Page count <= 0");
-		} catch (IOException e) {
+		} catch (IOException | ServletException e) {
 			e.printStackTrace();
 			printErrorResponse("The printed document failed to be sent over the network. Please try again. "
 					+ e.getMessage(), out);
@@ -177,8 +180,8 @@ public class ClientInterface {
 		out.println("TotalCost: " + totalCost);
 	}
 	
-	private static File savePDF(HttpServletRequest request) throws IOException {
-		InputStream in = request.getInputStream();
+	private static File savePDF(Part filePart) throws IOException {
+		InputStream in = filePart.getInputStream();
 		File outFile = new File(cacheDirectory, UUID.randomUUID() + ".pdf");
 		
 		OutputStream os = new BufferedOutputStream(new FileOutputStream(outFile));

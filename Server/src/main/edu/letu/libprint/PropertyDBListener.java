@@ -27,6 +27,7 @@ public class PropertyDBListener implements ServletContextListener {
 	
 	// This runs once on startup; initialize PropertyDB
 	public void contextInitialized(ServletContextEvent c) {
+		
 		if (PropertyDB.initialized()) {
 			throw new IllegalStateException("PropertyDB has already been initialized!");
 		} else {

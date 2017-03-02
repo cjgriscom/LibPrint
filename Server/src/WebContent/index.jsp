@@ -8,7 +8,28 @@
 <title>Sample Index</title>
 </head>
 <body>
-<p><%= new java.util.Date().toString() %>
-</p>
+<h1>Website API Calls</h1><hr/>
+<form method="get" action="RequestHandler">
+	<input type="hidden" name="secToken" value="temp"/>
+	Request: listQueue<input type="hidden" name="request" value="listQueue"/><br/>
+	<input type="submit"/><br/>
+</form><hr/>
+<h1>Client Application API Calls</h1><hr/>
+<form method="post" action="RequestHandler">
+	<input type="hidden" name="secToken" value="temp"/>
+	request: getInformation<input type="hidden" name="request" value="getInformation"/><br/>
+	username: <input name="username" value="chandlergriscom"/><br/>
+	computer: <input name="computer" value="S1"/><br/>
+	<input type="submit"/><br/>
+</form><hr/>
+<form method="post" action="RequestHandler" enctype="multipart/form-data">
+	<input type="hidden" name="secToken" value="temp" />
+	request: printPDF<input type="hidden" name="request" value="printPDF"/><br/>
+	username: <input name="username" value="chandlergriscom"/><br/>
+	computer: <input name="computer" value="S1"/><br/>
+	printerName: <input name="printerName" value="Color"/><br/>
+	file: <input type="file" name="file"/><br/>
+	<input type="submit"/><br/>
+</form><hr/>
 </body>
 </html>
