@@ -41,7 +41,7 @@ public class PrintDispatch {
 		for (int i = 0; i < printServices.length; i++) {
 			printers[i] = printServices[i].getName().trim();
 		}
-		return null;
+		return printers;
 	}
 
 	private static PrintService findPrintService(String systemPrinter) {

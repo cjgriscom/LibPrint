@@ -10,8 +10,15 @@
 <body>
 <h1>Website API Calls</h1><hr/>
 <form method="get" action="RequestHandler">
+	Lists waiting items in the print queue<br/>
 	<input type="hidden" name="secToken" value="temp"/>
 	Request: listQueue<input type="hidden" name="request" value="listQueue"/><br/>
+	<input type="submit"/><br/>
+</form><hr/>
+<form method="get" action="RequestHandler">
+	This will be used to configure printers and associate names like public "Black and White" to a system "HP Officejet m270"<br/>
+	<input type="hidden" name="secToken" value="temp"/>
+	Request: listSystemPrinters<input type="hidden" name="request" value="listSystemPrinters"/><br/>
 	<input type="submit"/><br/>
 </form><hr/>
 <h1>Client Application API Calls</h1><hr/>
