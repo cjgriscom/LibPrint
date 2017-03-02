@@ -33,6 +33,9 @@ public class PrinterList implements Serializable {
 		if (studentPrices == null) studentPrices = new TreeMap<>();
 		if (maxQueueLength == null) maxQueueLength = 30; // Default
 		if (maxUserDocs == null) maxUserDocs = 3; // Default
+		
+		this.addPrinter("Color", "library_printer_1", true, 0.50, 0.50); // TODO remove
+		this.addPrinter("Black and White", "library_printer_2", true, 0.10, 0);
 	}
 	
 	/**

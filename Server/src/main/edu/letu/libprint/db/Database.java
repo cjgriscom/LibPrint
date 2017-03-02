@@ -1,6 +1,5 @@
 package edu.letu.libprint.db;
 
-import java.io.File;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -9,6 +8,7 @@ import com.quirkygaming.propertydb.PropertyDB;
 import com.quirkygaming.propertylib.MutableProperty;
 
 import edu.letu.libprint.PropertyDBListener;
+import edu.letu.libprint.Util;
 
 public class Database { // Persistent Database Accessor
 	
@@ -17,21 +17,8 @@ public class Database { // Persistent Database Accessor
 	public static final ErrorHandler<RuntimeException> pdb_handler = 
 			PropertyDBListener.pdb_handler;
 	
-	private static File storageDirectory;
-	
 	private static MutableProperty<UserList> userList;
 	private static MutableProperty<PrinterList> printerList;
-	
-	private static String storageRoot; // TODO use a more bulletproof solution
-	static { // Resolve the data storage root differently depending on OS
-		String os = System.getProperty("os.name");
-		if (os.startsWith("Windows")) {
-			storageRoot = System.getenv("APPDATA");
-		} else {
-			storageRoot = System.getenv(System.getProperty("user.home"));
-		}
-		
-	}
 	
 	private Database() {}
 	
@@ -40,24 +27,20 @@ public class Database { // Persistent Database Accessor
 	 * Called by PropertyDBListener
 	 */
 	public static void init() {
-		// Use APPDATA/.LibPrint as data storage
-		storageDirectory = new File(storageRoot, ".LibPrint/");
-		storageDirectory.mkdirs(); // Make sure it exists
-		
 		// Initialize the UserList object
 		userList = PropertyDB.initiateProperty(
-				storageDirectory, "UserList", CONFIG_VERSION,
+				Util.getStorageRoot(), "UserList", CONFIG_VERSION,
 				new UserList(), pdb_handler);
 		
 		// Initialize the PrinterList object
 		printerList = PropertyDB.initiateProperty(
-				storageDirectory, "PrinterList", CONFIG_VERSION,
+				Util.getStorageRoot(), "PrinterList", CONFIG_VERSION,
 				new PrinterList(), pdb_handler);
 	}
 	
 	/**
 	 * Synchronized accessor method for the database's UserList
-	 * Supply the modifier consumer with 
+	 * Supply the accessor consumer with 
 	 * @param accessor A lambda expression like (userList) -> {...}
 	 * @param modify Set to true if the accessor modifies the UserList. 
 	 */
@@ -70,7 +53,7 @@ public class Database { // Persistent Database Accessor
 
 	/**
 	 * Synchronized accessor method for the database's PrinterList
-	 * Supply the modifier consumer with 
+	 * Supply the accessor consumer with 
 	 * @param accessor A lambda expression like (printerList) -> {...}
 	 * @param modify Set to true if the accessor modifies the PrinterList. 
 	 */
@@ -83,7 +66,7 @@ public class Database { // Persistent Database Accessor
 
 	/**
 	 * Synchronized accessor method for the database's UserList
-	 * Supply the modifier function with 
+	 * Supply the accessor function with 
 	 * @param accessor A lambda expression like (userList) -> {...return result;}
 	 * @param modify Set to true if the accessor modifies the UserList. 
 	 */
@@ -95,7 +78,7 @@ public class Database { // Persistent Database Accessor
 
 	/**
 	 * Synchronized accessor method for the database's PrinterList
-	 * Supply the modifier function with 
+	 * Supply the accessor function with 
 	 * @param accessor A lambda expression like (printerList) -> {...return result;}
 	 * @param modify Set to true if the accessor modifies the PrinterList. 
 	 */
