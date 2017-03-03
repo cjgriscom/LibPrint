@@ -21,16 +21,16 @@
 	request=listHistory<input type="hidden" name="request" value="listHistory"/><br/>
 	<input type="submit"/><br/>
 </form><hr/>
-<form method="get" action="RequestHandler">
+<form method="post" action="RequestHandler">
 	Send a queue item to the printer. It will be moved to history.<br/>
-	GET<br/>
+	POST<br/>
 	request=acceptPrint<input type="hidden" name="request" value="acceptPrint"/><br/>
 	ID=<input name="ID" /><br/>
 	<input type="submit"/><br/>
 </form><hr/>
-<form method="get" action="RequestHandler">
+<form method="post" action="RequestHandler">
 	Cancel a queue item. It will be moved to history.<br/>
-	GET<br/>
+	POST<br/>
 	request=rejectPrint<input type="hidden" name="request" value="rejectPrint"/><br/>
 	ID=<input name="ID" /><br/>
 	<input type="submit"/><br/>

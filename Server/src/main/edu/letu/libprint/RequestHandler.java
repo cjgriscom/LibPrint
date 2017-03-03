@@ -39,10 +39,6 @@ public class RequestHandler extends HttpServlet {
 					WebInterface.handleListQueue(request, out);
 				} else if (requestName.equals("listHistory")) {
 					WebInterface.handleListHistory(request, out);
-				} else if (requestName.equals("acceptPrint")) {
-					WebInterface.acceptPrint(request, out);
-				} else if (requestName.equals("rejectPrint")) {
-					WebInterface.rejectPrint(request, out);
 				} else if (requestName.equals("listSystemPrinters")) {
 					WebInterface.handleListSystemPrinters(request, out);
 				} else {
@@ -74,7 +70,13 @@ public class RequestHandler extends HttpServlet {
 				// JSON Responses
 				response.setContentType("application/json;charset=UTF-8");
 				out = response.getWriter();
-				out.println("{}");
+				if (requestName.equals("acceptPrint")) {
+					WebInterface.acceptPrint(request, out);
+				} else if (requestName.equals("rejectPrint")) {
+					WebInterface.rejectPrint(request, out);
+				} else {
+					out.println("{}");
+				}
 			}
 		} else {
 			response.setContentType("text/plain;charset=UTF-8");
