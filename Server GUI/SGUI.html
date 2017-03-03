@@ -21,7 +21,13 @@
 		<div align="left">
 			Color &emsp; &emsp; &emsp; &emsp;
 			<input type="radio" name="group1" value="Milk"> Active
-			<input type="radio" name="group1" value="Butter" checked> Maintenance<br>
+			<input type="radio" name="group1" value="Butter" checked> Maintenance
+			&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+			<form method="get" action="RequestHandler">
+			<input type="hidden" name="secToken" value="temp"/>
+			<input type="hidden" name="request" value="listSystemPrinters"/>
+			<input type="submit"/>
+			</form><hr/>
 			Black and White &nbsp;
 			<input type="radio" name="group1" value="Milk"> Active
 			<input type="radio" name="group1" value="Butter" checked> Maintenance<br>
@@ -29,6 +35,11 @@
 		</fieldset>
 	</form>
 	Print Queue 
+	<form method="get" action="RequestHandler">
+	<input type="hidden" name="secToken" value="temp"/>
+	Request: listQueue<input type="hidden" name="request" value="listQueue"/>
+	<input type="submit"/>
+	</form><hr/>
 	<table style="width:100%">
   <tr>
     <th>Time</th>
