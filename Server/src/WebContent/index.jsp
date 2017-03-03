@@ -10,32 +10,54 @@
 <body>
 <h1>Website API Calls</h1><hr/>
 <form method="get" action="RequestHandler">
-	Lists waiting items in the print queue<br/>
-	<input type="hidden" name="secToken" value="temp"/>
-	Request: listQueue<input type="hidden" name="request" value="listQueue"/><br/>
+	Lists waiting items in the print queue.  Use IDs to sort or submit prints<br/>
+	GET<br/>
+	request=listQueue<input type="hidden" name="request" value="listQueue"/><br/>
+	<input type="submit"/><br/>
+</form><hr/>
+<form method="get" action="RequestHandler">
+	Lists accepted or rejected items in the print queue. Sort by ID.<br/>
+	GET<br/>
+	request=listHistory<input type="hidden" name="request" value="listHistory"/><br/>
+	<input type="submit"/><br/>
+</form><hr/>
+<form method="get" action="RequestHandler">
+	Send a queue item to the printer. It will be moved to history.<br/>
+	GET<br/>
+	request=acceptPrint<input type="hidden" name="request" value="acceptPrint"/><br/>
+	ID=<input name="ID" /><br/>
+	<input type="submit"/><br/>
+</form><hr/>
+<form method="get" action="RequestHandler">
+	Cancel a queue item. It will be moved to history.<br/>
+	GET<br/>
+	request=rejectPrint<input type="hidden" name="request" value="rejectPrint"/><br/>
+	ID=<input name="ID" /><br/>
 	<input type="submit"/><br/>
 </form><hr/>
 <form method="get" action="RequestHandler">
 	This will be used to configure printers and associate names like public "Black and White" to a system "HP Officejet m270"<br/>
-	<input type="hidden" name="secToken" value="temp"/>
-	Request: listSystemPrinters<input type="hidden" name="request" value="listSystemPrinters"/><br/>
+	GET<br/>
+	request=listSystemPrinters<input type="hidden" name="request" value="listSystemPrinters"/><br/>
 	<input type="submit"/><br/>
 </form><hr/>
 <h1>Client Application API Calls</h1><hr/>
 <form method="post" action="RequestHandler">
 	<input type="hidden" name="secToken" value="temp"/>
-	request: getInformation<input type="hidden" name="request" value="getInformation"/><br/>
-	username: <input name="username" value="chandlergriscom"/><br/>
-	computer: <input name="computer" value="S1"/><br/>
+	GET<br/>
+	request=getInformation<input type="hidden" name="request" value="getInformation"/><br/>
+	username=<input name="username" value="chandlergriscom"/><br/>
+	computer=<input name="computer" value="S1"/><br/>
 	<input type="submit"/><br/>
 </form><hr/>
 <form method="post" action="RequestHandler" enctype="multipart/form-data">
 	<input type="hidden" name="secToken" value="temp" />
-	request: printPDF<input type="hidden" name="request" value="printPDF"/><br/>
-	username: <input name="username" value="chandlergriscom"/><br/>
-	computer: <input name="computer" value="S1"/><br/>
-	printerName: <input name="printerName" value="Color"/><br/>
-	file: <input type="file" name="file"/><br/>
+	POST<br/>
+	request=printPDF<input type="hidden" name="request" value="printPDF"/><br/>
+	username=<input name="username" value="chandlergriscom"/><br/>
+	computer=<input name="computer" value="S1"/><br/>
+	printerName=<input name="printerName" value="Color"/><br/>
+	file=<input type="file" name="file"/><br/>
 	<input type="submit"/><br/>
 </form><hr/>
 </body>

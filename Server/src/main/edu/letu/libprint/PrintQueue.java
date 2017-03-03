@@ -43,10 +43,34 @@ public class PrintQueue {
 		return ret;
 	}
 	
+	/**
+	 * Add a new QueueItem
+	 * @param location
+	 * @param username
+	 * @param printerName
+	 * @param computer
+	 * @param filename
+	 * @param pages
+	 * @param totalCost
+	 */
 	public void add(File location, String username, String printerName, String computer, String filename, int pages, String totalCost) {
 		queue.add(new QueueItem(location, username, printerName, computer, filename, pages, totalCost, queue.size()));
 	}
 	
+	/**
+	 * Retrieve an item from the queue (warning no error checking!!)
+	 * Use containsID to check for a valid ID
+	 * @param ID
+	 * @return
+	 */
+	public QueueItem get(int ID) {
+		return queue.get(ID);
+	}
+	
+	/**
+	 * Return the number of waiting elements in the queue
+	 * @return
+	 */
 	public int waitingSize() {
 		int i = 0;
 		for (QueueItem q : queue) {
@@ -55,6 +79,11 @@ public class PrintQueue {
 		return i;
 	}
 	
+	/**
+	 * Return the number of active documents in the queue submitted by a specific user 
+	 * @param username
+	 * @return
+	 */
 	public int countDocsPerUser(String username) {
 		int i = 0;
 		for (QueueItem q : queue) {
@@ -64,6 +93,10 @@ public class PrintQueue {
 		return i;
 	}
 	
+	/**
+	 * Print the entire queue in JSON format
+	 * @param stream
+	 */
 	public void queueJSON(PrintWriter stream) {
 		stream.println("{");
 		stream.println("\"queue\": [");
@@ -77,6 +110,10 @@ public class PrintQueue {
 		stream.println("}");
 	}
 	
+	/**
+	 * Print the JSON history list
+	 * @param stream
+	 */
 	public void historyJSON(PrintWriter stream) {
 		stream.println("{");
 		stream.println("\"history\": [");
@@ -88,5 +125,14 @@ public class PrintQueue {
 		}
 		stream.println("]");
 		stream.println("}");
+	}
+
+	/**
+	 * Return true if the ID exists within this queue
+	 * @param ID
+	 * @return
+	 */
+	public boolean containsID(int ID) {
+		return ID < queue.size();
 	}
 }

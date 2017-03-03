@@ -22,13 +22,14 @@ public class QueueItem {
 	private File location;
 	private int ID;
 	
-	public QueueItem(File location, String username, String printerName, String computer, String filename, int pages, String totalCost, int ID) {
+	QueueItem(File location, String username, String printerName, String computer, String filename, int pages, String totalCost, int ID) {
 		this.username = username;
 		this.printerName = printerName;
 		this.computer = computer;
 		this.filename = filename;
 		this.pages = pages;
 		this.total = totalCost;
+		this.ID = ID;
 	}
 	
 	public Status status() {return status;}
@@ -53,5 +54,17 @@ public class QueueItem {
 	
 	public File getLocation() {
 		return location;
+	}
+	
+	public String getPrinterName() {
+		return this.printerName;
+	}
+	
+	/**
+	 * Change the status of this print (i.e. move from Waiting to Canceled or Printed)
+	 * @param status
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 }

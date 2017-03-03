@@ -22,9 +22,8 @@ public class PrintDispatch {
 	 * @throws InvalidPasswordException
 	 * @throws IOException
 	 */
-	public static void printDocument(File pdf, String systemPrinter) throws PrinterException, InvalidPasswordException, IOException {
+	public static void printDocument(File pdf, PrintService printService) throws PrinterException, InvalidPasswordException, IOException {
 		PDDocument document = PDDocument.load(pdf);
-		PrintService printService = findPrintService(systemPrinter);
 		PrinterJob job = PrinterJob.getPrinterJob();
 		job.setPageable(new PDFPageable(document));
 		job.setPrintService(printService);
@@ -43,12 +42,16 @@ public class PrintDispatch {
 		}
 		return printers;
 	}
-
-	private static PrintService findPrintService(String systemPrinter) {
+	
+	/**
+	 * Use this to resolve the system printer. 
+	 * @param systemPrinter The name of the system printer 
+	 * @return The printer object, or null if it does not exist
+	 */
+	public static PrintService findPrintService(String systemPrinter) {
 		PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
 		for (PrintService printService : printServices) {
 
-			System.out.println(printService.getName().trim());
 			if (printService.getName().trim().equals(systemPrinter)) {
 				return printService;
 			}

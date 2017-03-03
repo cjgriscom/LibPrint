@@ -37,6 +37,12 @@ public class RequestHandler extends HttpServlet {
 				out = response.getWriter();
 				if (requestName.equals("listQueue")) {
 					WebInterface.handleListQueue(request, out);
+				} else if (requestName.equals("listHistory")) {
+					WebInterface.handleListHistory(request, out);
+				} else if (requestName.equals("acceptPrint")) {
+					WebInterface.acceptPrint(request, out);
+				} else if (requestName.equals("rejectPrint")) {
+					WebInterface.rejectPrint(request, out);
 				} else if (requestName.equals("listSystemPrinters")) {
 					WebInterface.handleListSystemPrinters(request, out);
 				} else {
