@@ -1,5 +1,6 @@
 package edu.letu.libprint.db;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeMap;
@@ -19,9 +20,34 @@ public class UserList implements Serializable {
 	// I've found this format to be more suitable for serialization
 	//      than having a separate User class.
 	
-	private final TreeMap<String, String> passwordHashes = new TreeMap<>();
-	private final TreeMap<String, Boolean> printerAccess = new TreeMap<>();
-	private final TreeMap<String, Boolean> userAccess = new TreeMap<>();
+	private TreeMap<String, String> passwordHashes = null;
+	private TreeMap<String, Boolean> printerAccess = null;
+	private TreeMap<String, Boolean> userAccess = null;
+	
+	private void init() {
+		if (passwordHashes == null) passwordHashes = new TreeMap<>();
+		if (printerAccess == null) printerAccess = new TreeMap<>();
+		if (userAccess == null) userAccess = new TreeMap<>();
+	}
+	
+	/**
+	 * Default constructor. Call init to verify starting state
+	 */
+	public UserList() {
+		init();
+	}
+	
+	/**
+	 * Called upon deserialization. In this case we just want to call init() to
+	 *   verify that the object is in a valid starting state.
+	 * @param in
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		init();
+	}
 	
 	/**
 	 * 

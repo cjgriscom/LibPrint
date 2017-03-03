@@ -1,5 +1,6 @@
 package edu.letu.libprint.db;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeMap;
@@ -17,11 +18,46 @@ public class PrinterList implements Serializable {
 	// I've found this format to be more suitable for serialization
 	//      than having a separate Printer class.
 	
-	private final TreeMap<String, Boolean> active = new TreeMap<>();
-	private final TreeMap<String, String> windowsNames = new TreeMap<>();
-	private final TreeMap<String, Double> patronPrices = new TreeMap<>();
-	private final TreeMap<String, Double> studentPrices = new TreeMap<>();
-
+	private TreeMap<String, Boolean> active = null;
+	private TreeMap<String, String> windowsNames = new TreeMap<>();
+	private TreeMap<String, Double> patronPrices = new TreeMap<>();
+	private TreeMap<String, Double> studentPrices = new TreeMap<>();
+	
+	private Integer maxQueueLength = null;
+	private Integer maxUserDocs = null;
+	
+	private void init() {
+		if (active == null) active = new TreeMap<>();
+		if (windowsNames == null) windowsNames = new TreeMap<>();
+		if (patronPrices == null) patronPrices = new TreeMap<>();
+		if (studentPrices == null) studentPrices = new TreeMap<>();
+		if (maxQueueLength == null) maxQueueLength = 30; // Default
+		if (maxUserDocs == null) maxUserDocs = 3; // Default
+		
+		this.addPrinter("Color", "library_printer_1", true, 0.50, 0.50); // TODO remove
+		this.addPrinter("Black and White", "library_printer_2", true, 0.10, 0);
+	}
+	
+	/**
+	 * Default constructor. Call init to verify starting state
+	 */
+	public PrinterList() {
+		init();
+	}
+	
+	/**
+	 * Called upon deserialization. In this case we just want to call init() to
+	 *   verify that the object is in a valid starting state.
+	 * @param in
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		init();
+	}
+	
+	
 	/**
 	 * 
 	 * @return the number of printers in this list
@@ -117,5 +153,31 @@ public class PrinterList implements Serializable {
 	 */
 	public double getStudentPrice(String printerName) {
 		return studentPrices.get(printerName);
+	}
+	
+	/**
+	 * 
+	 * @return The configurable maximum length of the queue
+	 */
+	public int getMaxQueueLength() {
+		return maxQueueLength;
+	}
+	
+	/**
+	 * 
+	 * @return The configurable maximum documents that may be submitted by one user at a time
+	 */
+	public int getMaxDocsPerUser() {
+		return maxUserDocs;
+	}
+	
+	/**
+	 * Checks for active printers
+	 * @return True if there are no active printers
+	 */
+	public boolean areAllPrintersOffline() {
+		boolean offline = true;
+		for (boolean a : active.values()) if (a) offline = false; // Found an active printer
+		return offline;
 	}
 }
