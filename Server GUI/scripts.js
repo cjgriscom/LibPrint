@@ -18,7 +18,12 @@ function callOtherDomain() {
     req.send();
 }
 }
-
+//http://stackoverflow.com/questions/5180382/convert-json-data-to-a-html-table
+//var myList = [
+//  { "name": "abc", "age": 50 },
+//  { "age": "25", "hobby": "swimming" },
+//  { "name": "xyz", "hobby": "programming" }
+//];
 
 
 // Builds the HTML Table out of myList.
