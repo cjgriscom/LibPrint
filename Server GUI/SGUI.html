@@ -2,11 +2,14 @@
 
 <head>
 	<h1>LibPrint Adiministration Page</h1>
+	<meta http-equiv="Access-Control-Allow-Origin" content="*">
 	<link rel="stylesheet" type="text/css" href="mystyle.css">
-    <title>My First HTML Page</title>
+	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+	<script src="scripts.js"></script>
+	<title>LibPrint Administration Page</title>
 </head>
 
-<body>
+<body onLoad="callOtherDomain()">
 
     <br></br>
 	
@@ -27,7 +30,7 @@
 			<input type="hidden" name="secToken" value="temp"/>
 			<input type="hidden" name="request" value="listSystemPrinters"/>
 			<input type="submit"/>
-			</form><hr/>
+			</form>
 			Black and White &nbsp;
 			<input type="radio" name="group1" value="Milk"> Active
 			<input type="radio" name="group1" value="Butter" checked> Maintenance<br>
@@ -35,11 +38,11 @@
 		</fieldset>
 	</form>
 	Print Queue 
-	<form method="get" action="RequestHandler">
-	<input type="hidden" name="secToken" value="temp"/>
-	Request: listQueue<input type="hidden" name="request" value="listQueue"/>
-	<input type="submit"/>
-	</form><hr/>
+	<button id="refresh" onclick="callOtherDomain()">Refresh</button> 
+	</br></br></br>
+	<table id="excelDataTable" border="1">
+    </table>
+	</br></br></br>
 	<table style="width:100%">
   <tr>
     <th>Time</th>
