@@ -1,6 +1,5 @@
 var req = new XMLHttpRequest();
 var url = "http://chandler.io/LibPrint/RequestHandler?request=listQueue";
-var myList;
 
 function callOtherDomain() {
 	if ('withCredentials' in req) {
@@ -19,16 +18,29 @@ function callOtherDomain() {
 }
 }
 //http://stackoverflow.com/questions/5180382/convert-json-data-to-a-html-table
-//var myList = [
-//  { "name": "abc", "age": 50 },
-//  { "age": "25", "hobby": "swimming" },
-//  { "name": "xyz", "hobby": "programming" }
+//var myList = [//...
+  //{ "name": "abc", "age": 50 },
+  //{ "age": "25", "hobby": "swimming" },
+ // { "name": "xyz", "hobby": "programming" }
 //];
 
-
+//$(document).ready(function() {
+ //           $("#refresh").click(function(event){
+  //             $('#temp').load('http://chandler.io/LibPrint/RequestHandler?request=listQueue');
+   //         });
+    //     });
+	$(document).ready(function() {
+				$("#refresh").click(function(event){
+				$.getJSON('http://chandler.io/LibPrint/RequestHandler?request=listQueue', function(jd) {
+					buildHtmlTable(excelDataTable, jd.queue);
+					$('#temp').append('<p> Document: ' +jd.queue + '</p>');
+				});
+			});
+		});
+	
 // Builds the HTML Table out of myList.
-function buildHtmlTable(selector) {
-	//myList = $.getJSON("http://chandler.io/LibPrint/RequestHandler?request=listQueue");
+function buildHtmlTable(selector, myList) {
+	
 	var columns = addAllColumnHeaders(myList, selector);
 
 	for (var i = 0; i < myList.length; i++) {
