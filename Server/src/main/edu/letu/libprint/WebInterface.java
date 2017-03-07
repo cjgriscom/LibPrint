@@ -57,9 +57,11 @@ public class WebInterface {
 							item.setStatus(QueueItem.Status.Printed);
 						} else {
 							printJsonMessage(out, "The system printer could not be found. Make sure the printer is online and the printer list is configured properly.", true);
+							item.setStatus(QueueItem.Status.Error); // TODO we dont want this in production
 						}
 					} else {
 						printJsonMessage(out, "The referenced printer does not exist in the server configuration. Make sure the printer list is configured properly.", true);
+						item.setStatus(QueueItem.Status.Error); // TODO we dont want this in production
 					}
 				} else {
 					String status = item.status().name().toLowerCase();

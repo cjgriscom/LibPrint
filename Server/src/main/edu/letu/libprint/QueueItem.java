@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class QueueItem {
 	public static enum Status {
-		Waiting, Printed, Canceled
+		Waiting, Printed, Canceled, Error
 	}
 	
 	private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("hh:mm a");

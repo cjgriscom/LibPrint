@@ -103,8 +103,11 @@ public class PrintQueue {
 		boolean printComma = false;
 		for (QueueItem i : queue) {
 			// Only include waiting items
-			if (i.status() == QueueItem.Status.Waiting) stream.println((printComma ? "," : "") + i.asJSON());
-			printComma = true;
+			if (i.status() == QueueItem.Status.Waiting) {
+				stream.println((printComma ? "," : "") + i.asJSON());
+				printComma = true;
+			}
+			
 		}
 		stream.println("]");
 		stream.println("}");
@@ -120,8 +123,11 @@ public class PrintQueue {
 		boolean printComma = false;
 		for (QueueItem i : queue) {
 			// Only include non-waiting items
-			if (i.status() != QueueItem.Status.Waiting) stream.println((printComma ? "," : "") + i.asJSON());
-			printComma = true;
+			if (i.status() != QueueItem.Status.Waiting) {
+				stream.println((printComma ? "," : "") + i.asJSON());
+				printComma = true;
+			}
+			
 		}
 		stream.println("]");
 		stream.println("}");
