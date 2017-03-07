@@ -29,15 +29,39 @@ function callOtherDomain() {
   //             $('#temp').load('http://chandler.io/LibPrint/RequestHandler?request=listQueue');
    //         });
     //     });
-	$(document).ready(function() {
-				$("#refresh").click(function(event){
-				$.getJSON('http://chandler.io/LibPrint/RequestHandler?request=listQueue', function(jd) {
-					buildHtmlTable(excelDataTable, jd.queue);
-					$('#temp').append('<p> Document: ' +jd.queue + '</p>');
-				});
+function clearTable(elementID)
+{
+    document.getElementById(elementID).innerHTML = "";
+}
+$(document).ready(function() {
+			$("#refresh").click(function(event){
+			$.getJSON('http://chandler.io/LibPrint/RequestHandler?request=listQueue', function(jd) {
+				$('#queue').empty();
+				buildHtmlTable(queue, jd.queue);
+			});
+			
+			$.getJSON('http://chandler.io/LibPrint/RequestHandler?request=listHistory', function(jd) {
+				$('#hist').empty();
+				buildHtmlTable(hist, jd.history);
 			});
 		});
-	
+	});
+$(document).ready(function() {
+	$("#cancel").click(function(event){
+    var frm = $('.htaccess');
+    var dat = JSON.stringify(frm.serializeArray());
+
+    alert("I am about to POST this:\n\n" + dat);
+
+	$.post(
+		 frm.attr("action"),
+         dat,
+         function(data) {
+           alert("Response: " + data);
+         }
+       );
+     });
+});
 // Builds the HTML Table out of myList.
 function buildHtmlTable(selector, myList) {
 	
