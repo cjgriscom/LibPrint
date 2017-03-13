@@ -70,8 +70,11 @@ public class Database { // Persistent Database Accessor
 	 * @param accessor A lambda expression like (userList) -> {...return result;}
 	 * @param modify Set to true if the accessor modifies the UserList. 
 	 */
-	public static synchronized <T> T accessUserList(Function<UserList, T> accessor, boolean modify) {
-		T ret = accessor.apply(userList.get());
+	public static <T> T accessUserList(Function<UserList, T> accessor, boolean modify) {
+		T ret;
+		synchronized(userList) { // Synchronize as per PropertyDB specifications
+			ret = accessor.apply(userList.get());
+		}
 		if (modify) userList.update(); // Tell PropertyDB to sync the object after modification
 		return ret;
 	}
@@ -83,7 +86,10 @@ public class Database { // Persistent Database Accessor
 	 * @param modify Set to true if the accessor modifies the PrinterList. 
 	 */
 	public static synchronized <T> T accessPrinterList(Function<PrinterList, T> accessor, boolean modify) {
-		T ret = accessor.apply(printerList.get());
+		T ret;
+		synchronized(printerList) {
+			ret = accessor.apply(printerList.get());
+		}
 		if (modify) printerList.update(); // Tell PropertyDB to sync the object after modification
 		return ret;
 	}
