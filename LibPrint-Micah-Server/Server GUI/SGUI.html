@@ -1,0 +1,83 @@
+<html>
+
+<head>
+	<h1>LibPrint Administration Page</h1>
+	<meta http-equiv="Access-Control-Allow-Origin" content="*">
+	<link rel="stylesheet" type="text/css" href="mystyle.css">
+	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+	<script src="scripts.js"></script>
+	<title>LibPrint Administration Page</title>
+</head>
+
+<body>
+
+    <br></br>
+	
+	<a href="https://en.wikipedia.org/wiki/User_(computing)" class="button">  Edit Users  </a>
+	<a href="http://www.bestbuy.com/site/office-electronics/printers/abcat0511001.c?id=abcat0511001" class="button">  Edit Printers  </a>
+	<a href="http://www.logout.com/" class="button">  Logout  </a> Micah Richards<br></br>
+	
+	<form>
+		<fieldset style="position: relative">
+		<legend>Active Printers:</legend>
+		<div align="left">
+		
+			Color &emsp; &emsp; &emsp; &emsp;
+			<input type="radio" name="group1" value="Milk"> Active
+			<input type="radio" name="group1" value="Butter" checked> Maintenance
+			
+			<a href="http://www.logout.com/" class="button2">  Update </a>
+			</br>
+			
+			Black and White &nbsp;
+			<input type="radio" name="group1" value="Milk"> Active
+			<input type="radio" name="group1" value="Butter" checked> Maintenance<br>
+			</div>
+		</fieldset>
+	</form>
+	Print Queue 
+	<button id="refresh">Refresh</button> 
+	</br></br></br>
+	<div>
+	<table id="queue" class="responstable">
+    </table>
+	
+	</br></br></br>
+	
+	<table id="hist"class="responstable">
+	</table>
+	</div>
+	</br></br></br>
+	
+	
+	
+	<div id="temp">
+		temp
+	</div>
+	</br></br></br>
+	<table class="responstable">
+   <tr>
+    <th>5:31 PM</th>
+    <th>chandlergriscom</th> 
+    <th>SRS.doc</th>
+    <th>S1</th>
+    <th>Bland and White</th>
+    <th>5</th>
+    <th>Free</th>
+    <th><a href="https://www.google.com/cloudprint/learn/" class="button"> Print </a></th>
+	<th><a id = "cancel" class="button"> Cancel </a></th>
+  </tr>
+  <tr>
+    <th>5:25 PM</th>
+    <th>dillonhartsfield</th> 
+    <th>MarsAssignment.doc</th>
+    <th>S5</th>
+    <th>Black and White</th>
+    <th>1</th>
+    <th>Free</th>
+	<th> 5:27 PM</th>
+  </tr>
+   </table>
+</body>
+
+</html>
