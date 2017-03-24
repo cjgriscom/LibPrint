@@ -27,6 +27,7 @@ public class QueueItem {
 		this.printerName = printerName;
 		this.computer = computer;
 		this.filename = filename;
+		if (filename.length() > 20) this.filename = filename.substring(0, 19) + "..."; // Long filenames should be shortened
 		this.pages = pages;
 		this.total = totalCost;
 		this.ID = ID;
@@ -38,10 +39,10 @@ public class QueueItem {
 		return "{" +
 				"\"ID\":" + ID + ",\n" +
 				"\"Time\":\"" + TIME_FORMAT.format(time) + "\",\n" +
-				"\"Username\":\"" + username + "\",\n" +
-				"\"Computer\":\"" + computer + "\",\n" +
-				"\"Printer\":\"" + printerName + "\",\n" +
-				"\"Filename\":\"" + filename + "\",\n" +
+				"\"Username\":\"" + Util.sanitizeJSONString(username) + "\",\n" +
+				"\"Computer\":\"" + Util.sanitizeJSONString(computer) + "\",\n" +
+				"\"Printer\":\"" + Util.sanitizeJSONString(printerName) + "\",\n" +
+				"\"Filename\":\"" + Util.sanitizeJSONString(filename) + "\",\n" +
 				"\"Pages\":" + pages + ",\n" +
 				"\"Total_Cost\":\"" + total + "\",\n" +
 				"\"Status\":\"" + status.name() + "\"\n" +

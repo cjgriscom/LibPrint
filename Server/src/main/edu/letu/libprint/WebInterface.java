@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 
 import javax.print.PrintService;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import edu.letu.libprint.db.Database;
 
@@ -121,7 +122,26 @@ public class WebInterface {
 		}
 		return ID;
 	}
-
+	
+	public static boolean sessionValid(HttpSession session) {
+		if (session != null && session.getAttribute("user") != null) {
+			
+			return true; // TODO validate user
+		} else {
+			return false;
+		}
+	}
+	
+	public static boolean validateSession(HttpSession session, PrintWriter out, boolean reqUserPerms, boolean reqPrintPerms) {
+		if (sessionValid(session)) {
+			String user = (String) session.getAttribute("user");
+			return true; // TODO validate user
+		} else {
+			printJsonMessage(out, "You are not logged in.", true);
+			return false;
+		}
+	}
+	
 	private static void printJsonMessage(PrintWriter out, String message, boolean error) {
 		out.println("{"
 				+ "\"status\": \"" + (error ? "error" : "OK") + "\","

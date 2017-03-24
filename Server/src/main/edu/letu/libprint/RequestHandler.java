@@ -36,11 +36,14 @@ public class RequestHandler extends HttpServlet {
 				response.setContentType("application/json;charset=UTF-8");
 				out = response.getWriter();
 				if (requestName.equals("listQueue")) {
-					WebInterface.handleListQueue(request, out);
+					if (WebInterface.validateSession(request.getSession(), out, false, false)) 
+						WebInterface.handleListQueue(request, out);
 				} else if (requestName.equals("listHistory")) {
-					WebInterface.handleListHistory(request, out);
+					if (WebInterface.validateSession(request.getSession(), out, false, false)) 
+						WebInterface.handleListHistory(request, out);
 				} else if (requestName.equals("listSystemPrinters")) {
-					WebInterface.handleListSystemPrinters(request, out);
+					if (WebInterface.validateSession(request.getSession(), out, false, true)) 
+						WebInterface.handleListSystemPrinters(request, out);
 				} else {
 					out.println("{}");
 				}
@@ -71,13 +74,17 @@ public class RequestHandler extends HttpServlet {
 				response.setContentType("application/json;charset=UTF-8");
 				out = response.getWriter();
 				if (requestName.equals("acceptPrint")) {
-					WebInterface.acceptPrint(request, out);
+					if (WebInterface.validateSession(request.getSession(), out, false, false)) 
+						WebInterface.acceptPrint(request, out);
 				} else if (requestName.equals("rejectPrint")) {
-					WebInterface.rejectPrint(request, out);
+					if (WebInterface.validateSession(request.getSession(), out, false, false)) 
+						WebInterface.rejectPrint(request, out);
 				} else if (requestName.equals("addPrinter")) {
-					WebInterface.addPrinter(request, out);
+					if (WebInterface.validateSession(request.getSession(), out, false, false)) 
+						WebInterface.addPrinter(request, out);
 				} else if (requestName.equals("removePrinter")) {
-					WebInterface.removePrinter(request, out);
+					if (WebInterface.validateSession(request.getSession(), out, false, false)) 
+						WebInterface.removePrinter(request, out);
 				} else {
 					out.println("{}");
 				}

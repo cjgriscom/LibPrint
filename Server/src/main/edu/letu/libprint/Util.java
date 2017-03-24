@@ -106,4 +106,13 @@ string GetBase64EncodedSHA256Hash(string plaintext) {
 			os.write(buf, 0, r);
 		}
 	}
+	
+	/**
+	 * Sanitize JSON string values
+	 * @param in Input string
+	 * @return
+	 */
+	public static String sanitizeJSONString(String in) {
+		return in.replace("\\", "\\\\").replace("\"", "\\\"");
+	}
 }
