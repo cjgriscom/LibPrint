@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 import com.stackoverflow.erickson.PasswordAuthentication;
 
@@ -16,6 +20,34 @@ public class Util {
 	static PasswordAuthentication auth = new PasswordAuthentication();
 	
 	private static File storageRoot = null;
+	
+	
+/* C# Code
+string GenerateSecToken(string domainCode, string username, string computer) {
+    return GetBase64EncodedSHA256Hash(domainCode + ":" + username + ":" + computer);
+}
+
+string GetBase64EncodedSHA256Hash(string plaintext) {
+    using (SHA256 hash = SHA256Managed.Create()) {
+        Byte[] result = hash.ComputeHash(Encoding.UTF8.GetBytes(plaintext));
+        return Convert.ToBase64String(result);
+    }
+}
+ */
+	/**
+	 * Produces a security token for authenticating the client.
+	 * @param domainCode A code supplied in the printer configuration
+	 * @param username Username supplied by the client
+	 * @param computer Computer domain name of the client
+	 * @return SHA256 hash of the concatenated strings
+	 * @throws NoSuchAlgorithmException 
+	 */
+	public static String generateSecToken(String domainCode, String username, String computer) throws NoSuchAlgorithmException {
+		String text = domainCode + ":" + username + ":" + computer;
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		byte[] hash = digest.digest(text.getBytes(StandardCharsets.UTF_8));
+		return Base64.getEncoder().encodeToString(hash).replaceAll("\\+", "-").replaceAll("/", "_").replaceAll("=", "");
+	}
 	
 	/**
 	 * Hashes the given char array

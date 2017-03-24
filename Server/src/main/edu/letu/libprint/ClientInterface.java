@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -17,6 +18,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 
 import edu.letu.libprint.db.Database;
 import edu.letu.libprint.db.PrinterList;
+import edu.letu.libprint.db.UndefinedDomainCodeException;
 
 public class ClientInterface {
 	private static enum UserType {Patron, Student, Error}
@@ -27,11 +29,11 @@ public class ClientInterface {
 		for (File f : cacheDirectory.listFiles()) f.delete(); // Delete cache on startup
 	}
 	
-	public static String generateSecToken(String username, String computer) {
-		return "temp"; // TODO stub
+	public static String generateSecToken(String username, String computer) throws NoSuchAlgorithmException, UndefinedDomainCodeException {
+		return Util.generateSecToken(Database.getDomainCode(), username, computer);
 	}
 	
-	public static boolean validateSecToken(String secToken, String username, String computer) {
+	public static boolean validateSecToken(String secToken, String username, String computer) throws NoSuchAlgorithmException, UndefinedDomainCodeException {
 		if (secToken == null || username == null
 				|| computer == null) {
 			return false;
@@ -46,9 +48,22 @@ public class ClientInterface {
 		final String computer = request.getParameter("computer");
 		
 		// This check fails if any parameters are null, of the token is invalid
-		if (validateSecToken(secToken, username, computer) == false) {
-			return printErrorResponse("The print server could not verify your computer's security information. "
-					+ "Ensure your library computer software is up to date.", out);
+		try {
+			if (validateSecToken(secToken, username, computer) == false) {
+				return printErrorResponse("The print server could not verify your computer's security information. "
+						+ "Ensure your library computer software is up to date.", out);
+			}
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return printErrorResponse("The print server failed to generate a security token. "
+					+ "This is the result of a java misconfiguration on the library's end. "
+					+ "Please contact IT for support.", out);
+			
+		} catch (UndefinedDomainCodeException e) {
+			System.err.println("A user tried to print, but no domainCode is defined!");
+			return printErrorResponse("The print server has not yet defined a domain code. "
+					+ "This is the result of a server misconfiguration on the library's end. "
+					+ "Please contact IT for support.", out);
 		}
 		
 		boolean printersOffline = Database.accessPrinterList((printerList) -> {

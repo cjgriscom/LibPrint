@@ -26,6 +26,7 @@ public class TestServlet extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		writer.println("<html><head><title>LibPrint Test Servlet</title></head><body><pre>");
 		new DatabaseTest().performTests(writer);
+		new ClientTest().performTests(writer);
 		writer.println("</pre></body></html>");
 
 	}

@@ -43,19 +43,19 @@
 </form><hr/>
 <h1>Client Application API Calls</h1><hr/>
 <form method="post" action="RequestHandler">
-	<input type="hidden" name="secToken" value="temp"/>
 	GET<br/>
 	request=getInformation<input type="hidden" name="request" value="getInformation"/><br/>
+	secToken=<input name="secToken" value="SxY-ildir7TC0y-64Yk-ny86ITr6LkaXXhdxzK0z-qs" /><br/>
 	username=<input name="username" value="chandlergriscom"/><br/>
-	computer=<input name="computer" value="S1"/><br/>
+	computer=<input name="computer" value="Prototype Servlet"/><br/>
 	<input type="submit"/><br/>
 </form><hr/>
 <form method="post" action="RequestHandler" enctype="multipart/form-data">
-	<input type="hidden" name="secToken" value="temp" />
 	POST<br/>
 	request=printPDF<input type="hidden" name="request" value="printPDF"/><br/>
+	secToken=<input name="secToken" value="SxY-ildir7TC0y-64Yk-ny86ITr6LkaXXhdxzK0z-qs" /><br/>
 	username=<input name="username" value="chandlergriscom"/><br/>
-	computer=<input name="computer" value="S1"/><br/>
+	computer=<input name="computer" value="Prototype Servlet"/><br/>
 	printerName=<input name="printerName" value="Color"/><br/>
 	file=<input type="file" name="file"/><br/>
 	<input type="submit"/><br/>

@@ -93,4 +93,9 @@ public class Database { // Persistent Database Accessor
 		if (modify) printerList.update(); // Tell PropertyDB to sync the object after modification
 		return ret;
 	}
+
+	public static String getDomainCode() throws UndefinedDomainCodeException {
+		// TODO Auto-generated method stub
+		return "temp";
+	}
 }
