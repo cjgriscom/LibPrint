@@ -69,6 +69,7 @@ function acceptPrint(id,accept) {
 }
 
 function buildHtmlTable(selector, myList, buttons) {
+	if (myList.length <= 0) return;
 	var columns = addAllColumnHeaders(selector,myList,buttons);
 	var rownum=0;
 	for (var i = myList.length - 1; i >= 0; i--) {
