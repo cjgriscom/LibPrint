@@ -1,23 +1,17 @@
-var req = new XMLHttpRequest();
 var domain = "localhost:8080";
-var url = "http://"+domain+"/LibPrint/RequestHandler?request=listQueue";
 
-function callOtherDomain() {
-	if ('withCredentials' in req) {
-    req.open('GET', url, true);
-    // Just like regular ol' XHR
-    req.onreadystatechange = function() {
-        if (req.readyState === 4) {
-            if (req.status >= 200 && req.status < 400) {
-                buildHtmlTable('#excelDataTable');
-            } else {
-                // Handle error case
-            }
-        }
-    };
-    req.send();
+function refreshTables() {
+	$.getJSON('http://'+domain+'/LibPrint/RequestHandler?request=listQueue', function(jd) {
+		$('#queue').empty();
+		buildHtmlTable(queue, jd.queue, true);
+	});
+		
+	$.getJSON('http://'+domain+'/LibPrint/RequestHandler?request=listHistory', function(jd) {
+		$('#hist').empty();
+		buildHtmlTable(hist, jd.history, false);
+	});
 }
-}
+
 //http://stackoverflow.com/questions/5180382/convert-json-data-to-a-html-table
 //var myList = [//...
   //{ "name": "abc", "age": 50 },
@@ -34,31 +28,12 @@ function clearTable(elementID)
 {
     document.getElementById(elementID).innerHTML = "";
 }
+
 $(document).ready(function() {
 	$("#refresh").click(function(event){
 		
-		$.getJSON('http://'+domain+'/LibPrint/RequestHandler?request=listQueue', function(jd) {
-			$('#queue').empty();
-			buildHtmlTable(queue, jd.queue);
-		});
+		refreshTables();
 			
-		$.getJSON('http://'+domain+'/LibPrint/RequestHandler?request=listHistory', function(jd) {
-			$('#hist').empty();
-			buildHtmlTable(hist, jd.history);
-		});
-			
-	});
-	
-	$(".bgre").click(function(event){
-		alert("here");
-		alert($(this).ID.replace("prb",""));
-		acceptPrint($(this).ID.replace("prb",""),true);
-	});
-	
-	$(".bred").click(function(event){
-		alert("here");
-		alert($(this).ID.replace("cab",""));
-		acceptPrint($(this).ID.replace("cab",""),false);
 	});
 	
 	$("#highlight").click(function(event){
@@ -82,29 +57,29 @@ $(document).ready(function() {
 // all records.
 
 function acceptPrint(id,accept) {
-     $.post('http://'+domain+'/LibPrint/RequestHandler', { request: (accept ? "acceptPrint" : "rejectPrint"), ID : id},
+     $.post('http://'+domain+'/LibPrint/RequestHandler', {request: (accept ? "acceptPrint" : "rejectPrint"), ID : id},
          function(returnedData){
-             callOtherDomain(); // Refresh tablee
-			 if(returnData.toString().contains("error")){
-				 alert("Error");
-             }
-         }).fail(function(){
+    	 	refreshTables(); // Refresh tables
+			if(returnedData.status === "error"){
+				alert(returnedData.message);
+            }
+         }, "json").fail(function(){
              alert("This operation failed to complete.");
          });
 }
 
-function buildHtmlTable(selector, myList) {
-	var columns = addAllColumnHeaders(selector,myList);
+function buildHtmlTable(selector, myList, buttons) {
+	var columns = addAllColumnHeaders(selector,myList,buttons);
 	var rownum=0;
-	for (var i = 0; i < myList.length; i++) {
+	for (var i = myList.length - 1; i >= 0; i--) {
 		var row$ = $('<tr/>');
 		for (var colIndex = 0; colIndex < columns.length; colIndex++) {
 			var cellValue = myList[i][columns[colIndex]];
 			if (cellValue == null) cellValue = "";
 			row$.append($('<td/>').html(cellValue));
 		}
-		row$.append($('<td/>').html("<a\"https://www.google.com/cloudprint/learn/\" id=\"prb"+rownum+"\" class=\"button bgre\"> Print </a>"));
-		row$.append($('<td/>').html("<a \" id=\"cab"+rownum+"\" class=\"button bred\"> Cancel </a>"));
+		if (buttons) row$.append($('<td/>').html("<a href='#' onclick='acceptPrint("+myList[i].ID+",true) ' id='prb"+rownum+"' class='button bgre'> Print </a>"));
+		if (buttons) row$.append($('<td/>').html("<a href='#' onclick='acceptPrint("+myList[i].ID+",false)' id='cab"+rownum+"' class='button bred'> Cancel </a>"));
 		rownum++;
 		$(selector).append(row$);
 	}
@@ -114,7 +89,7 @@ function buildHtmlTable(selector, myList) {
 // Adds a header row to the table and returns the set of columns.
 // Need to do union of keys from all records as some records may not contain
 // all records.
-function addAllColumnHeaders(selector,myList) {
+function addAllColumnHeaders(selector,myList,buttons) {
 	var columnSet = [];
 	var headerTr$ = $('<tr/>');
 
@@ -127,8 +102,8 @@ function addAllColumnHeaders(selector,myList) {
 			}
 		}
 	}
-	headerTr$.append($('<th/>').html("Print"));
-	headerTr$.append($('<th/>').html("Cancel"));
+	if (buttons) headerTr$.append($('<th/>').html("Print"));
+	if (buttons) headerTr$.append($('<th/>').html("Cancel"));
 	
 	$(selector).append(headerTr$);
 	return columnSet;
