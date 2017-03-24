@@ -26,12 +26,12 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 				if (username.isEmpty() || password.isEmpty() || password2.isEmpty() || domainCode.isEmpty()) {
 					errMsg.set("?error=Fill%20in%20all%20fields%20before%20submitting.");
 				} else if (!password.equals(password2)) {
-					errMsg.set("?error=The%20passwords%20do%20not%20match..");
+					errMsg.set("?error=The%20passwords%20do%20not%20match.");
 				} else {
 					Database.accessUserList(new Consumer<UserList>() {public void accept(final UserList userList) {
 						userList.clear();
 						userList.addAdmin(username, password.toCharArray());
-					}}, false);
+					}}, true);
 
 					Database.setDomainCode(domainCode);
 				}
