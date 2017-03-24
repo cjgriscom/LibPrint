@@ -37,14 +37,14 @@ public class QueueItem {
 	public String asJSON() {
 		return "{" +
 				"\"ID\":" + ID + ",\n" +
-				"\"time\":\"" + TIME_FORMAT.format(time) + "\",\n" +
-				"\"status\":\"" + status.name() + "\",\n" +
-				"\"username\":\"" + username + "\",\n" +
-				"\"printerName\":\"" + printerName + "\",\n" +
-				"\"filename\":\"" + filename + "\",\n" +
-				"\"computer\":\"" + computer + "\",\n" +
-				"\"pages\":" + pages + ",\n" +
-				"\"totalCost\":\"" + total + "\"\n" +
+				"\"Time\":\"" + TIME_FORMAT.format(time) + "\",\n" +
+				"\"Username\":\"" + username + "\",\n" +
+				"\"Computer\":\"" + computer + "\",\n" +
+				"\"Printer\":\"" + printerName + "\",\n" +
+				"\"Filename\":\"" + filename + "\",\n" +
+				"\"Pages\":" + pages + ",\n" +
+				"\"Total_Cost\":\"" + total + "\",\n" +
+				"\"Status\":\"" + status.name() + "\"\n" +
 				"}";
 	}
 

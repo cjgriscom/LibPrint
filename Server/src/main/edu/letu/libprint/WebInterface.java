@@ -65,6 +65,7 @@ public class WebInterface {
 					}
 				} else {
 					String status = item.status().name().toLowerCase();
+					if (status.equals("error")) status = "removed";
 					printJsonMessage(out, "This item has already been " + status + ".", true);
 				}
 			} else {
@@ -96,6 +97,17 @@ public class WebInterface {
 				printJsonMessage(out, "The queue does not contain this ID.", true);
 			}
 		});
+	}
+
+	public static void addPrinter(HttpServletRequest request, PrintWriter out) {
+		//Database.accessPrinterList(accessor, modify);
+		// TODO stub
+		
+	}
+
+	public static void removePrinter(HttpServletRequest request, PrintWriter out) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	private static int resolveID(HttpServletRequest request) {

@@ -74,6 +74,10 @@ public class RequestHandler extends HttpServlet {
 					WebInterface.acceptPrint(request, out);
 				} else if (requestName.equals("rejectPrint")) {
 					WebInterface.rejectPrint(request, out);
+				} else if (requestName.equals("addPrinter")) {
+					WebInterface.addPrinter(request, out);
+				} else if (requestName.equals("removePrinter")) {
+					WebInterface.removePrinter(request, out);
 				} else {
 					out.println("{}");
 				}

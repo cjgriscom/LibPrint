@@ -28,6 +28,9 @@ public class UserList implements Serializable {
 		if (passwordHashes == null) passwordHashes = new TreeMap<>();
 		if (printerAccess == null) printerAccess = new TreeMap<>();
 		if (userAccess == null) userAccess = new TreeMap<>();
+		
+		this.addUser("chandlergriscom", "chandlergriscom".toCharArray()); // TODO remove
+		this.addUser("micahrichards", "micahrichards".toCharArray());
 	}
 	
 	/**

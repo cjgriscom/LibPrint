@@ -193,7 +193,7 @@ public class ClientInterface {
 	
 	private static UserType printErrorResponse(String error, PrintWriter out) {
 		out.println("Response: Error");
-		out.println("Error: " + error);
+		out.println("Error: " + error.replaceAll(":", "--"));
 		return UserType.Error;
 	}
 }
