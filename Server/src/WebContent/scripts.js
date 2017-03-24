@@ -1,5 +1,6 @@
 var req = new XMLHttpRequest();
-var url = "http://chandler.io/LibPrint/RequestHandler?request=listQueue";
+var domain = "localhost:8080";
+var url = "http://"+domain+"/LibPrint/RequestHandler?request=listQueue";
 
 function callOtherDomain() {
 	if ('withCredentials' in req) {
@@ -36,12 +37,12 @@ function clearTable(elementID)
 $(document).ready(function() {
 	$("#refresh").click(function(event){
 		
-		$.getJSON('http://chandler.io/LibPrint/RequestHandler?request=listQueue', function(jd) {
+		$.getJSON('http://'+domain+'/LibPrint/RequestHandler?request=listQueue', function(jd) {
 			$('#queue').empty();
 			buildHtmlTable(queue, jd.queue);
 		});
 			
-		$.getJSON('http://chandler.io/LibPrint/RequestHandler?request=listHistory', function(jd) {
+		$.getJSON('http://'+domain+'/LibPrint/RequestHandler?request=listHistory', function(jd) {
 			$('#hist').empty();
 			buildHtmlTable(hist, jd.history);
 		});
@@ -81,7 +82,7 @@ $(document).ready(function() {
 // all records.
 
 function acceptPrint(id,accept) {
-     $.post('http://chandler.io/LibPrint/RequestHandler', { request: (accept ? "acceptPrint" : "rejectPrint"), ID : id},
+     $.post('http://'+domain+'/LibPrint/RequestHandler', { request: (accept ? "acceptPrint" : "rejectPrint"), ID : id},
          function(returnedData){
              callOtherDomain(); // Refresh tablee
 			 if(returnData.toString().contains("error")){
