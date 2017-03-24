@@ -1,4 +1,4 @@
-var domain = "localhost:8080";
+var domain = "chandler.io";
 
 function refreshTables() {
 	$.getJSON('http://'+domain+'/LibPrint/RequestHandler?request=listQueue', function(jd) {
