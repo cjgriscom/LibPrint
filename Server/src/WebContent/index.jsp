@@ -1,64 +1,118 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<%@page import="edu.letu.libprint.Util"%>
+<%@page import="edu.letu.libprint.db.UserList"%>
+<%@page import="java.util.function.Consumer"%>
+<%@page import="com.quirkygaming.propertylib.MutableProperty"%>
+<%@page import="edu.letu.libprint.db.Database"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+    
+<% 
+
+if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("request") != null) {
+
+	final MutableProperty<String> errMsg = MutableProperty.newProperty("");
+	final MutableProperty<Boolean> valid = MutableProperty.newProperty(false);
+	final String req = request.getParameter("request");
+	
+	if (req.equals("login")) {
+
+		final String username = request.getParameter("username");
+		final char[] password = request.getParameter("password").toCharArray();
+		
+		if (username != null && password != null) {
+			Database.accessUserList(new Consumer<UserList>() {public void accept(final UserList userList) {
+				
+				if (userList.userExists(username)) {
+					if (userList.passwordMatches(username, password)) {
+						valid.set(true);
+					} else {
+						errMsg.set("?error=The%20password%20does%20not%20match.");
+					}
+				} else {
+					errMsg.set("?error=User%20not%20recognized.");
+				}
+				
+				
+			}}, false);
+			
+			if (valid.get()) 
+				session.setAttribute("user", username);
+			
+
+			Util.wipe(password); // Zero out password
+		}
+		
+		
+	} else if (req.equals("logout")) {
+		session.removeAttribute("user");
+	    
+	}
+	response.sendRedirect(request.getRequestURI() + errMsg.get());
+}
+
+%> 
+<!DOCTYPE html>
+<html>
+
+<% 
+
+boolean loggedIn = session != null && session.getAttribute("user") != null;
+if (!loggedIn) {
+%>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Sample Index</title>
+	<meta http-equiv="Access-Control-Allow-Origin" content="*" />
+	<link rel="stylesheet" type="text/css" href="mystyle.css">
+	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+	<script src="scripts.js"></script>
+	<title>LibPrint Login</title>
 </head>
-<body>
-<h1>Website API Calls</h1><hr/>
-<form method="get" action="RequestHandler">
-	Lists waiting items in the print queue.  Use IDs to sort or submit prints<br/>
-	GET<br/>
-	request=listQueue<input type="hidden" name="request" value="listQueue"/><br/>
-	<input type="submit"/><br/>
-</form><hr/>
-<form method="get" action="RequestHandler">
-	Lists accepted or rejected items in the print queue. Sort by ID.<br/>
-	GET<br/>
-	request=listHistory<input type="hidden" name="request" value="listHistory"/><br/>
-	<input type="submit"/><br/>
-</form><hr/>
-<form method="post" action="RequestHandler">
-	Send a queue item to the printer. It will be moved to history.<br/>
-	POST<br/>
-	request=acceptPrint<input type="hidden" name="request" value="acceptPrint"/><br/>
-	ID=<input name="ID" /><br/>
-	<input type="submit"/><br/>
-</form><hr/>
-<form method="post" action="RequestHandler">
-	Cancel a queue item. It will be moved to history.<br/>
-	POST<br/>
-	request=rejectPrint<input type="hidden" name="request" value="rejectPrint"/><br/>
-	ID=<input name="ID" /><br/>
-	<input type="submit"/><br/>
-</form><hr/>
-<form method="get" action="RequestHandler">
-	This will be used to configure printers and associate names like public "Black and White" to a system "HP Officejet m270"<br/>
-	GET<br/>
-	request=listSystemPrinters<input type="hidden" name="request" value="listSystemPrinters"/><br/>
-	<input type="submit"/><br/>
-</form><hr/>
-<h1>Client Application API Calls</h1><hr/>
-<form method="post" action="RequestHandler">
-	<input type="hidden" name="secToken" value="temp"/>
-	GET<br/>
-	request=getInformation<input type="hidden" name="request" value="getInformation"/><br/>
-	username=<input name="username" value="chandlergriscom"/><br/>
-	computer=<input name="computer" value="S1"/><br/>
-	<input type="submit"/><br/>
-</form><hr/>
-<form method="post" action="RequestHandler" enctype="multipart/form-data">
-	<input type="hidden" name="secToken" value="temp" />
-	POST<br/>
-	request=printPDF<input type="hidden" name="request" value="printPDF"/><br/>
-	username=<input name="username" value="chandlergriscom"/><br/>
-	computer=<input name="computer" value="S1"/><br/>
-	printerName=<input name="printerName" value="Color"/><br/>
-	file=<input type="file" name="file"/><br/>
-	<input type="submit"/><br/>
-</form><hr/>
+
+<body onload="refreshTables()">
+	<div class = "front">
+	<div class = "components">
+	<br>
+	<h1>LibPrint Login</h1>
+    <br>
+    
+	<div class="buttons" style="text-align:center;margin: 0 auto;">
+	<span style="color:red;">
+    <%    
+    if (request.getParameter("error") != null) out.println(request.getParameter("error"));
+    
+    %>
+    </span>
+	<form method="post">
+	<input name="request" type="hidden" value="login"/>
+	<input name="username" placeholder="Username" style="width:40%; height:30px;"/>
+	<br><br>
+	<input name="password" type="password" placeholder="Password" style="width:40%; height:30px;"/>
+	<br><br>
+	<button type="submit" style="width:40%; height:30px;">Log In</button>
+	</form>
+	</div>
+	<br><br><br><br><br><br><br><br><br>
+	</div>
+	</div>
 </body>
+
+<% } else { 
+out.println("Logged in: " + session.getAttribute("user") + "  "); // TODO remove
+%>
+
+
+Placeholder for SGUI
+
+<body>
+
+	<form method="post">
+	<input name="request" type="hidden" value="logout"/>
+	<button type="submit">Log Out</button>
+	</form>
+</body>
+
+
+<% } %>
+
+
 </html>
