@@ -19,6 +19,7 @@ public class Database { // Persistent Database Accessor
 	
 	private static MutableProperty<UserList> userList;
 	private static MutableProperty<PrinterList> printerList;
+	private static MutableProperty<String> domainCode;
 	
 	private Database() {}
 	
@@ -36,6 +37,11 @@ public class Database { // Persistent Database Accessor
 		printerList = PropertyDB.initiateProperty(
 				Util.getStorageRoot(), "PrinterList", CONFIG_VERSION,
 				new PrinterList(), pdb_handler);
+		
+		// Initialize the domainCode string
+		domainCode = PropertyDB.initiateProperty(
+				Util.getStorageRoot(), "DomainCode", CONFIG_VERSION,
+				null, pdb_handler);
 	}
 	
 	/**
@@ -94,8 +100,20 @@ public class Database { // Persistent Database Accessor
 		return ret;
 	}
 
+	public static boolean isDomainCodeSet() {
+		return domainCode.get() != null;
+	}
+	
+	public static void setDomainCode(String newCode) {
+		domainCode.set(newCode);
+		domainCode.update();
+	}
+	
 	public static String getDomainCode() throws UndefinedDomainCodeException {
-		// TODO Auto-generated method stub
-		return "temp";
+		if (isDomainCodeSet()) {
+			return domainCode.get();
+		} else {
+			throw new UndefinedDomainCodeException();
+		}
 	}
 }

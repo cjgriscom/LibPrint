@@ -14,7 +14,30 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 	final MutableProperty<Boolean> valid = MutableProperty.newProperty(false);
 	final String req = request.getParameter("request");
 	
-	if (req.equals("login")) {
+	if (req.equals("configure")) {
+		if (Database.isDomainCodeSet()) {
+			errMsg.set("?error=The%20server%20is%20already%20configured.");
+		} else {
+			final String username = request.getParameter("setusername");
+			final String password = request.getParameter("setpassword");
+			final String password2 = request.getParameter("setpassword2");
+			final String domainCode = request.getParameter("domainCode");
+			if (username != null && password != null && password2 != null && domainCode != null) {
+				if (username.isEmpty() || password.isEmpty() || password2.isEmpty() || domainCode.isEmpty()) {
+					errMsg.set("?error=Fill%20in%20all%20fields%20before%20submitting.");
+				} else if (!password.equals(password2)) {
+					errMsg.set("?error=The%20passwords%20do%20not%20match..");
+				} else {
+					Database.accessUserList(new Consumer<UserList>() {public void accept(final UserList userList) {
+						userList.clear();
+						userList.addAdmin(username, password.toCharArray());
+					}}, false);
+
+					Database.setDomainCode(domainCode);
+				}
+			}
+		}
+	} else if (req.equals("login")) {
 
 		final String username = request.getParameter("username");
 		final char[] password = request.getParameter("password").toCharArray();
@@ -51,24 +74,71 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 }
 
 %> 
+
+
 <!DOCTYPE html>
 <html>
 
 <% 
 
 boolean loggedIn = session != null && session.getAttribute("user") != null;
-if (!loggedIn) {
+if (!Database.isDomainCodeSet()) {
+	// Domain code is not set; display initial configuration form
+	
+%>
+<head>
+	<link rel="stylesheet" type="text/css" href="mystyle.css">
+	<title>LibPrint Initial Configuration</title>
+</head>
+
+<body>
+	<div class = "front">
+	<div class = "components">
+	<br>
+	<h1>Configure LibPrint</h1>
+    <br>
+    
+	<div class="buttons" style="text-align:center;margin: 0 auto;">
+	<span style="color:red;">
+    <%    
+    if (request.getParameter("error") != null) out.println(request.getParameter("error"));
+    else out.println("Declare the administrator user and domain code. "
+    		+"The domain code should be a long, unique, private passphrase "
+    		+"that uniquely identifies this LibPrint network. "
+    		+"Identical domain codes must be declared in each client installation as well.");
+    
+    %>
+    </span>
+	<form method="post">
+	<input name="request" type="hidden" value="configure"/>
+	<br><br>
+	<input name="domainCode" placeholder="Domain Code" style="width:40%; height:30px;"/>
+	<br><br>
+	<input name="setusername" placeholder="Administrator Username" style="width:40%; height:30px;"/>
+	<br><br>
+	<input name="setpassword" type="password" placeholder="Administrator Password" style="width:40%; height:30px;"/>
+	<br><br>
+	<input name="setpassword2" type="password" placeholder="Confirm Password" style="width:40%; height:30px;"/>
+	<br><br>
+	<button type="submit" style="width:40%; height:30px;">Log In</button>
+	</form>
+	</div>
+	<br><br><br><br><br><br><br><br><br>
+	</div>
+	</div>
+</body>
+
+<%
+	
+} else if (!loggedIn) {
 %>
 
 <head>
-	<meta http-equiv="Access-Control-Allow-Origin" content="*" />
 	<link rel="stylesheet" type="text/css" href="mystyle.css">
-	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
-	<script src="scripts.js"></script>
 	<title>LibPrint Login</title>
 </head>
 
-<body onload="refreshTables()">
+<body>
 	<div class = "front">
 	<div class = "components">
 	<br>
@@ -95,6 +165,7 @@ if (!loggedIn) {
 	</div>
 	</div>
 </body>
+
 
 <% } else { 
 %>
@@ -175,6 +246,5 @@ if (!loggedIn) {
 
 
 <% } %>
-
 
 </html>

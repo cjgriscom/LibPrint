@@ -28,9 +28,6 @@ public class UserList implements Serializable {
 		if (passwordHashes == null) passwordHashes = new TreeMap<>();
 		if (printerAccess == null) printerAccess = new TreeMap<>();
 		if (userAccess == null) userAccess = new TreeMap<>();
-		
-		this.addUser("chandlergriscom", "chandlergriscom".toCharArray()); // TODO remove
-		this.addUser("micahrichards", "micahrichards".toCharArray());
 	}
 	
 	/**
@@ -72,6 +69,17 @@ public class UserList implements Serializable {
 	}
 	
 	/**
+	 * Add a new user with administrator access policies
+	 * @param username A unique username
+	 * @param password Plaintext password (will be hashed)
+	 */
+	public void addAdmin(String username, char[] password) {
+		passwordHashes.put(username, Util.hashPassword(password));
+		printerAccess.put(username, true);
+		userAccess.put(username, true);
+	}
+	
+	/**
 	 * Completely remove a user from this list
 	 * @param username
 	 */
@@ -79,6 +87,15 @@ public class UserList implements Serializable {
 		passwordHashes.remove(username);
 		printerAccess.remove(username);
 		userAccess.remove(username);
+	}
+	
+	/**
+	 * Erase this list
+	 */
+	public void clear() {
+		passwordHashes.clear();
+		printerAccess.clear();
+		userAccess.clear();
 	}
 	
 	/**
