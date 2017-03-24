@@ -1,0 +1,103 @@
+h1 {
+	font-family: Tahoma, Geneva, sans-serif;
+	text-align: center;
+}
+body {
+    background-color: #CCC;
+	min-width: 900;
+}
+/*http://stackoverflow.com/questions/16489937/how-do-i-horizontally-center-a-span-element-inside-a-div*/
+.buttons {
+	display:block;
+    min-width:100%;
+	margin: 0 auto;
+}
+.front {
+    background-color: #EEE;
+	width: 90%;
+	min-width: 740px;
+	min-height: 100%;
+	margin: auto;
+    background-repeat: repeat;
+}
+.components {
+	width: 90%;
+	margin: auto;
+}
+.ap{
+   display:block;
+    min-width:100%;
+	margin: 0 auto;
+}
+.ap div{
+	display: inline-block;
+}
+
+.box{
+	float:left; 
+	height: 40px;
+}
+.buttons a {
+    display: inline-block;
+    /* float:left;  remove ;*/
+}
+
+.tinyspace{
+	width:1%;
+	height: 30px;
+	float: left;
+	background-color: transparent;
+}
+/*rgb(240,179,16);*/
+
+.button {
+    border: 1px solid #080808;
+    color: #080808;
+    text-align: center;
+    text-decoration: none;
+	vertical-align: middle;
+    display: inline-block;
+    font-size: 16px;
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+  text-overflow: ellipsis;
+}
+.button:hover {
+    background-color: #CCC;
+}
+.bred:hover {
+	 background-color: red;
+}
+.bgre:hover {
+	 background-color: green;
+}
+table, th, td {
+    border: 1px solid black;
+}
+
+td{
+	/*padding: 5px;*/
+	text-align: center;
+	overflow: hidden;
+  text-overflow: ellipsis;
+	background-color: white;
+}
+
+table {
+	margin: 0 auto;
+  text-overflow: ellipsis;
+	overflow: hidden;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th {
+	height: 50px;
+  text-overflow: ellipsis;
+    background-color:#CCC;
+    color: black;
+	
+}
+
+/*tr:nth-child(even){background-color:rgb(255,255,255);*/

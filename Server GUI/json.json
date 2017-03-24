@@ -1,0 +1,44 @@
+{
+"queue": [
+{"ID":0,
+"time":"11:29 AM",
+"status":"Waiting",
+"username":"chandlergriscom",
+"printerName":"Black and White",
+"filename":"example.doc",
+"computer":"S1",
+"pages":5,
+"totalCost":"Free"
+}
+,{"ID":1,
+"time":"11:29 AM",
+"status":"Waiting",
+"username":"LibraryGuest1",
+"printerName":"Color",
+"filename":"example.doc",
+"computer":"S3",
+"pages":1,
+"totalCost":"$0.50"
+}
+,{"ID":2,
+"time":"11:29 AM",
+"status":"Waiting",
+"username":"LibraryGuest1",
+"printerName":"Black and White",
+"filename":"example2.doc",
+"computer":"S3",
+"pages":1,
+"totalCost":"$0.10"
+}
+,{"ID":3,
+"time":"11:29 AM",
+"status":"Waiting",
+"username":"LibraryGuest1",
+"printerName":"Color",
+"filename":"example3.doc",
+"computer":"S3",
+"pages":3,
+"totalCost":"$1.50"
+}
+]
+}
