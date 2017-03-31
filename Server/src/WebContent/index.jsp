@@ -240,16 +240,17 @@ if (!Database.isDomainCodeSet()) {
 					boolean active = pl.isActive(printer);
 					String activeChecked = active ? " checked" : "";
 					String maintenanceChecked = !active ? " checked" : "";
+					String tdStyle = active ? " style='background-color: LightGreen;'" : " style='background-color: LightCoral;'";
 					
 					printersOut.append("<tr>");
-					printersOut.append("<td>"+printer+"</td>");
+					printersOut.append("<td"+tdStyle+">"+printer+"</td>");
 					printersOut.append(
-						  "<td><input id=\"rb"+radioId+"\" type=\"radio\" onChange=\"this.form.submit();\""
+						  "<td"+tdStyle+"><input id=\"rb"+radioId+"\" type=\"radio\" onChange=\"this.form.submit();\""
 						+ " name=\"printer"+printer.hashCode()+"\" value=\"active\""+activeChecked+">"
 						+ "<label for=\"rb"+radioId+"\">Active</label></td>");
 					radioId++;
 					printersOut.append(
-							  "<td><input id=\"rb"+radioId+"\" type=\"radio\" onChange=\"this.form.submit();\""
+							  "<td"+tdStyle+"><input id=\"rb"+radioId+"\" type=\"radio\" onChange=\"this.form.submit();\""
 							+ " name=\"printer"+printer.hashCode()+"\" value=\"maintenance\""+maintenanceChecked+">"
 							+ "<label for=\"rb"+radioId+"\">Maintenance</label></td>");
 						radioId++;
