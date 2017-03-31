@@ -29,7 +29,14 @@ function clearTable(elementID)
     document.getElementById(elementID).innerHTML = "";
 }
 
+function periodicRefresh() {
+	refreshTables();
+	setTimeout(periodicRefresh, 5000);
+}
+
 $(document).ready(function() {
+	setTimeout(periodicRefresh, 5000);
+	
 	$("#refresh").click(function(event){
 		
 		refreshTables();
