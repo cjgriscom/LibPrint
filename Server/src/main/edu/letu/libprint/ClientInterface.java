@@ -108,7 +108,7 @@ public class ClientInterface {
 		Database.accessPrinterList((printerList) -> {
 			int i = 0;
 			for (String printerName : printerList.getPrinterNames()) {
-				out.println("Printer" + (i++) + ": " + printerName + ", " + getPrinterPriceString(ut, printerName, printerList));
+				if (printerList.isActive(printerName)) out.println("Printer" + (i++) + ": " + printerName + ", " + getPrinterPriceString(ut, printerName, printerList));
 			}
 		}, false);
 	}
