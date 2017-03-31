@@ -1,29 +1,15 @@
-var domain = "chandler.io";
-
 function refreshTables() {
-	$.getJSON('http://'+domain+'/LibPrint/RequestHandler?request=listQueue', function(jd) {
+	$.getJSON('RequestHandler?request=listQueue', function(jd) {
 		$('#queue').empty();
 		buildHtmlTable(queue, jd.queue, true);
 	});
 		
-	$.getJSON('http://'+domain+'/LibPrint/RequestHandler?request=listHistory', function(jd) {
+	$.getJSON('RequestHandler?request=listHistory', function(jd) {
 		$('#hist').empty();
 		buildHtmlTable(hist, jd.history, false);
 	});
 }
 
-//http://stackoverflow.com/questions/5180382/convert-json-data-to-a-html-table
-//var myList = [//...
-  //{ "name": "abc", "age": 50 },
-  //{ "age": "25", "hobby": "swimming" },
- // { "name": "xyz", "hobby": "programming" }
-//];
-
-//$(document).ready(function() {
- //           $("#refresh").click(function(event){
-  //             $('#temp').load('http://chandler.io/LibPrint/RequestHandler?request=listQueue');
-   //         });
-    //     });
 function clearTable(elementID)
 {
     document.getElementById(elementID).innerHTML = "";
@@ -64,7 +50,7 @@ $(document).ready(function() {
 // all records.
 
 function acceptPrint(id,accept) {
-     $.post('http://'+domain+'/LibPrint/RequestHandler', {request: (accept ? "acceptPrint" : "rejectPrint"), ID : id},
+     $.post('RequestHandler', {request: (accept ? "acceptPrint" : "rejectPrint"), ID : id},
          function(returnedData){
     	 	refreshTables(); // Refresh tables
 			if(returnedData.status === "error"){
