@@ -5,6 +5,9 @@ import java.io.PrintWriter;
 import javax.print.PrintService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.JspWriter;
+
+import com.quirkygaming.propertylib.MutableProperty;
 
 import edu.letu.libprint.db.Database;
 
@@ -132,14 +135,24 @@ public class WebInterface {
 		}
 	}
 	
-	public static boolean validateSession(HttpSession session, PrintWriter out, boolean reqUserPerms, boolean reqPrintPerms) {
+	public static boolean validateJSPSession(HttpSession session, MutableProperty<String> error, boolean reqUserPerms, boolean reqPrintPerms) {
 		if (sessionValid(session)) {
 			String user = (String) session.getAttribute("user");
 			return true; // TODO validate user
 		} else {
-			printJsonMessage(out, "You are not logged in.", true);
+
+			error.set("You are not logged in.");
 			return false;
 		}
+	}
+	
+	public static boolean validateSession(HttpSession session, PrintWriter out, boolean reqUserPerms, boolean reqPrintPerms) {
+		MutableProperty<String> error = MutableProperty.newProperty(null);
+		boolean success = validateJSPSession(session, error, reqUserPerms, reqPrintPerms);
+		if (!success) {
+			printJsonMessage(out, error.get(), true);
+		}
+		return success;
 	}
 	
 	private static void printJsonMessage(PrintWriter out, String message, boolean error) {

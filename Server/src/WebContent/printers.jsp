@@ -1,7 +1,4 @@
-<%@page import="java.util.Enumeration"%>
 <%@page import="edu.letu.libprint.Util"%>
-<%@page import="edu.letu.libprint.WebInterface"%>
-<%@page import="edu.letu.libprint.db.PrinterList"%>
 <%@page import="edu.letu.libprint.db.UserList"%>
 <%@page import="java.util.function.Consumer"%>
 <%@page import="com.quirkygaming.propertylib.MutableProperty"%>
@@ -19,7 +16,7 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 	
 	if (req.equals("configure")) {
 		if (Database.isDomainCodeSet()) {
-			errMsg.set("The server is already configured.");
+			errMsg.set("?error=The%20server%20is%20already%20configured.");
 		} else {
 			final String username = request.getParameter("setusername");
 			final String password = request.getParameter("setpassword");
@@ -27,9 +24,9 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 			final String domainCode = request.getParameter("domainCode");
 			if (username != null && password != null && password2 != null && domainCode != null) {
 				if (username.isEmpty() || password.isEmpty() || password2.isEmpty() || domainCode.isEmpty()) {
-					errMsg.set("Fill in all fields before submitting.");
+					errMsg.set("?error=Fill%20in%20all%20fields%20before%20submitting.");
 				} else if (!password.equals(password2)) {
-					errMsg.set("The passwords do not match.");
+					errMsg.set("?error=The%20passwords%20do%20not%20match.");
 				} else {
 					Database.accessUserList(new Consumer<UserList>() {public void accept(final UserList userList) {
 						userList.clear();
@@ -52,10 +49,10 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 					if (userList.passwordMatches(username, password)) {
 						valid.set(true);
 					} else {
-						errMsg.set("The password does not match.");
+						errMsg.set("?error=The%20password%20does%20not%20match.");
 					}
 				} else {
-					errMsg.set("User not recognized.");
+					errMsg.set("?error=User%20not%20recognized.");
 				}
 				
 				
@@ -72,27 +69,8 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 	} else if (req.equals("logout")) {
 		session.removeAttribute("user");
 	    
-	} else if (req.equals("editPrinters")) {
-		if (WebInterface.validateJSPSession(request.getSession(), errMsg, false, false)) {
-			
-			Database.accessPrinterList(new Consumer<PrinterList>(){public void accept(PrinterList pl) {
-				Enumeration<String> i = request.getParameterNames();
-				while (i.hasMoreElements()) {
-					String next = i.nextElement();
-					if (next.startsWith("printer")) {
-						String hashCode = next.replaceFirst("printer", "");
-						for (String name : pl.getPrinterNames()) {
-							if (hashCode.equals(name.hashCode() + "")) {
-								pl.setActive(name, request.getParameter(next).equals("active"));
-							}
-						}
-					}
-				}
-			}}, true);
-			
-		}
 	}
-	response.sendRedirect(request.getRequestURI() + (errMsg.equals("") ? "" : "?error=" + Util.sanitizeURL(errMsg.get())));
+	response.sendRedirect(request.getRequestURI() + errMsg.get());
 }
 
 %> 
@@ -229,39 +207,21 @@ if (!Database.isDomainCodeSet()) {
 	<div id="ap">
 	
 <div class="box" style="width:50%;" >
-<form method="post"><input name="request" type="hidden" value="editPrinters"/>
-	<table>
-		<% 
-		final StringBuilder printersOut = new StringBuilder();
-		Database.accessPrinterList(new Consumer<PrinterList>(){
-			public void accept(PrinterList pl) {
-				int radioId = 0;
-				for (String printer : pl.getPrinterNames()) {
-					boolean active = pl.isActive(printer);
-					String activeChecked = active ? " checked" : "";
-					String maintenanceChecked = !active ? " checked" : "";
-					
-					printersOut.append("<tr>");
-					printersOut.append("<td>"+printer+"</td>");
-					printersOut.append(
-						  "<td><input id=\"rb"+radioId+"\" type=\"radio\" onChange=\"this.form.submit();\""
-						+ " name=\"printer"+printer.hashCode()+"\" value=\"active\""+activeChecked+">"
-						+ "<label for=\"rb"+radioId+"\">Active</label></td>");
-					radioId++;
-					printersOut.append(
-							  "<td><input id=\"rb"+radioId+"\" type=\"radio\" onChange=\"this.form.submit();\""
-							+ " name=\"printer"+printer.hashCode()+"\" value=\"maintenance\""+maintenanceChecked+">"
-							+ "<label for=\"rb"+radioId+"\">Maintenance</label></td>");
-						radioId++;
-					
-					printersOut.append("</tr>");
-				}
-			}
-		}, false);
-		out.println(printersOut);
-		%>
-	</table>
-</form>
+	Color &emsp; &emsp; &emsp; &emsp;
+	<input id="rb1" type="radio" name="group1" value="G1A" checked> 
+	<label for="rb1">Active</label>
+	<input id="rb2" type="radio" name="group1" value="G1M"> 
+	<label for="rb2">Maintenance</label>
+	<br>
+	Black and White &nbsp;
+	<input id="rb3" type="radio" name="group2" value="G2A" checked> 
+	<label for="rb3">Active</label>
+	<input id="rb4" type="radio" name="group2" value="G2M"> 
+	<label for="rb4">Maintenance</label>
+</div>
+<a class="tinyspace"> </a>
+<div class="box" style="width:49%;">
+<a href="http://www.logout.com/" class="button">  Update </a>
 </div>
 </div>
 		

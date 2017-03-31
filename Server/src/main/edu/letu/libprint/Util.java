@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -114,5 +116,18 @@ string GetBase64EncodedSHA256Hash(string plaintext) {
 	 */
 	public static String sanitizeJSONString(String in) {
 		return in.replace("\\", "\\\\").replace("\"", "\\\"");
+	}
+	
+	/**
+	 * Sanitize URL string values
+	 * @param in Input string
+	 * @return
+	 */
+	public static String sanitizeURL(String in) {
+		try {
+			return URLEncoder.encode(in, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }
