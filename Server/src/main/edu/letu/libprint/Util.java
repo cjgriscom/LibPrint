@@ -130,4 +130,24 @@ string GetBase64EncodedSHA256Hash(string plaintext) {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	/**
+	 * Get a price-style formatted double like 0.00
+	 * @param priceD
+	 * @return
+	 */
+	public static String formatPrice(double priceD) {
+		return String.format("%1.2f", priceD);
+	}
+	
+	/**
+	 * Get a formatted price string from a double
+	 * @param priceD
+	 * @param perPage Append " per page" to the end of a price?
+	 * @return
+	 */
+	public static String priceString(double priceD, boolean perPage) {
+		if (priceD == 0.00) return "Free";
+		else return "$" + formatPrice(priceD) + (perPage ? " per page" : "");
+	}
 }

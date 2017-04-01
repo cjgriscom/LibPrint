@@ -120,6 +120,29 @@ public class PrinterList implements Serializable {
 	}
 	
 	/**
+	 * Returns an integer ID suitable for URL parameters
+	 * @param printerName
+	 * @return
+	 */
+	public int getPrinterID(String printerName) {
+		return Math.abs(printerName.hashCode());
+	}
+	
+	/**
+	 * Translate the integer ID to a printer name.  Returns null if invalid.
+	 * @param printerID from getPrinterID
+	 * @return
+	 */
+	public String getPrinterByID(String printerID) {
+		for (String name : getPrinterNames()) {
+			if (printerID.equals(name.hashCode() + "")) {
+				return name;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * 
 	 * @param printerName The listed title of the printer
 	 * @return Whether the printer is active or not

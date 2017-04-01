@@ -71,6 +71,8 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 		
 	} else if (req.equals("logout")) {
 		session.removeAttribute("user");
+		response.sendRedirect("index.jsp");
+		return;
 	    
 	} else if (req.equals("editPrinters")) {
 		if (WebInterface.validateJSPSession(request.getSession(), errMsg, false, false)) {
@@ -80,19 +82,17 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 				while (i.hasMoreElements()) {
 					String next = i.nextElement();
 					if (next.startsWith("printer")) {
-						String hashCode = next.replaceFirst("printer", "");
-						for (String name : pl.getPrinterNames()) {
-							if (hashCode.equals(name.hashCode() + "")) {
-								pl.setActive(name, request.getParameter(next).equals("active"));
-							}
-						}
+						String code = next.replaceFirst("printer", "");
+						String printerName = pl.getPrinterByID(code);
+						if (printerName != null) pl.setActive(printerName, request.getParameter(next).equals("active"));
 					}
 				}
 			}}, true);
 			
 		}
 	}
-	response.sendRedirect(request.getRequestURI() + (errMsg.equals("") ? "" : "?error=" + Util.sanitizeURL(errMsg.get())));
+	response.sendRedirect("index.jsp" + (errMsg.equals("") ? "" : "?error=" + Util.sanitizeURL(errMsg.get())));
+	return;
 }
 
 %> 
@@ -103,7 +103,6 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 
 <% 
 
-boolean loggedIn = session != null && session.getAttribute("user") != null;
 if (!Database.isDomainCodeSet()) {
 	// Domain code is not set; display initial configuration form
 	
@@ -152,7 +151,7 @@ if (!Database.isDomainCodeSet()) {
 
 <%
 	
-} else if (!loggedIn) {
+} else if (!WebInterface.sessionValid(session)) {
 %>
 
 <head>
@@ -193,10 +192,16 @@ if (!Database.isDomainCodeSet()) {
 %>
 
 <head>
-	<meta http-equiv="Access-Control-Allow-Origin" content="*" />
 	<link rel="stylesheet" type="text/css" href="mystyle.css">
 	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
 	<script src="scripts.js"></script>
+
+	<%if (request.getParameter("error") != null) {%>
+		<script>
+			alert("<%out.print(request.getParameter("error"));%>");
+		</script>
+	<%}%>
+
 	<title>LibPrint Administration Page</title>
 </head>
 
@@ -210,7 +215,7 @@ if (!Database.isDomainCodeSet()) {
 	<div class="box" style="width:50%;float:left;" >
 		<a href="https://en.wikipedia.org/wiki/User_(computing)" class="button" style="width:48%;float:left">  Edit Users  </a>
 		<a class="tinyspace"> </a>
-		<a href="http://www.bestbuy.com/site/office-electronics/printers/abcat0511001.c?id=abcat0511001" class="button" style="width:48%">  Edit Printers  </a>
+		<a href="printers.jsp" class="button" style="width:48%">  Edit Printers  </a>
 		<a class="tinyspace"> </a>
 	
 	</div>
@@ -246,12 +251,12 @@ if (!Database.isDomainCodeSet()) {
 					printersOut.append("<td"+tdStyle+">"+printer+"</td>");
 					printersOut.append(
 						  "<td"+tdStyle+"><input id=\"rb"+radioId+"\" type=\"radio\" onChange=\"this.form.submit();\""
-						+ " name=\"printer"+printer.hashCode()+"\" value=\"active\""+activeChecked+">"
+						+ " name=\"printer"+pl.getPrinterID(printer)+"\" value=\"active\""+activeChecked+">"
 						+ "<label for=\"rb"+radioId+"\">Active</label></td>");
 					radioId++;
 					printersOut.append(
 							  "<td"+tdStyle+"><input id=\"rb"+radioId+"\" type=\"radio\" onChange=\"this.form.submit();\""
-							+ " name=\"printer"+printer.hashCode()+"\" value=\"maintenance\""+maintenanceChecked+">"
+							+ " name=\"printer"+pl.getPrinterID(printer)+"\" value=\"maintenance\""+maintenanceChecked+">"
 							+ "<label for=\"rb"+radioId+"\">Maintenance</label></td>");
 						radioId++;
 					

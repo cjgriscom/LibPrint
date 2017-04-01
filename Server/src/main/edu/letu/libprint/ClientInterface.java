@@ -122,15 +122,13 @@ public class ClientInterface {
 	private static String getPrinterPriceString(UserType ut, String printerName, PrinterList printerList) {
 		double priceD = getPrinterPrice(ut, printerName, printerList);
 		
-		if (priceD == 0.00) return "Free";
-		else return "$" + String.format("%1.2f", priceD) + " per page";
+		return Util.priceString(priceD, true);
 	}
 
 	private static String getTotalPriceString(double pagePrice, int count) {
 		double priceD = pagePrice * count;
-		
-		if (priceD == 0.00) return "Free";
-		else return "$" + String.format("%1.2f", priceD);
+
+		return Util.priceString(priceD, false);
 	}
 
 	public static void handlePrintPDF(HttpServletRequest request, PrintWriter out) {

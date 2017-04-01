@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import javax.print.PrintService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.JspWriter;
 
 import com.quirkygaming.propertylib.MutableProperty;
 
@@ -138,9 +137,23 @@ public class WebInterface {
 	public static boolean validateJSPSession(HttpSession session, MutableProperty<String> error, boolean reqUserPerms, boolean reqPrintPerms) {
 		if (sessionValid(session)) {
 			String user = (String) session.getAttribute("user");
-			return true; // TODO validate user
+			Database.accessUserList((ul) -> {
+				if (ul.userExists(user)) {
+					if (ul.hasUserAccess(user) || !reqUserPerms) {
+						if (!ul.hasPrinterAccess(user) || !reqPrintPerms) {
+							error.set(""); // All good
+						} else {
+							error.set("You do not have permission to edit printers.");
+						}
+					} else {
+						error.set("You do not have permission to edit users.");
+					}
+				} else {
+					error.set("User " + user + " does not exist!");
+				}
+			}, false);
+			return error.equals(""); // True if no error
 		} else {
-
 			error.set("You are not logged in.");
 			return false;
 		}
