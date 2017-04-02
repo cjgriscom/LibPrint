@@ -79,12 +79,6 @@ public class RequestHandler extends HttpServlet {
 				} else if (requestName.equals("rejectPrint")) {
 					if (WebInterface.validateSession(request.getSession(), out, false, false)) 
 						WebInterface.rejectPrint(request, out);
-				} else if (requestName.equals("addPrinter")) {
-					if (WebInterface.validateSession(request.getSession(), out, false, false)) 
-						WebInterface.addPrinter(request, out);
-				} else if (requestName.equals("removePrinter")) {
-					if (WebInterface.validateSession(request.getSession(), out, false, false)) 
-						WebInterface.removePrinter(request, out);
 				} else {
 					out.println("{}");
 				}

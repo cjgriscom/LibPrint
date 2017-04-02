@@ -144,7 +144,7 @@ public class PrinterList implements Serializable {
 	 */
 	public String getPrinterByID(String printerID) {
 		for (String name : getPrinterNames()) {
-			if (printerID.equals(name.hashCode() + "")) {
+			if (printerID.equals(getPrinterID(name)+"")) {
 				return name;
 			}
 		}

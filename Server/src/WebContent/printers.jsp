@@ -92,7 +92,7 @@ if (!WebInterface.validateJSPSession(session, errMsg, false, true)) {
     <br>
 	<div class = "buttons">
 	<div class="box" style="width:50%;float:left;" >
-		<a href="https://en.wikipedia.org/wiki/User_(computing)" class="button" style="width:48%;float:left">  Edit Users  </a>
+		<a href="users.jsp" class="button" style="width:48%;float:left">  Edit Users  </a>
 		<a class="tinyspace"> </a>
 		<a href="index.jsp" class="button" style="width:48%">  Administration  </a>
 		<a class="tinyspace"> </a>

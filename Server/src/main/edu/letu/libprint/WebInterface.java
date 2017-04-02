@@ -113,17 +113,6 @@ public class WebInterface {
 			}
 		});
 	}
-
-	public static void addPrinter(HttpServletRequest request, PrintWriter out) {
-		//Database.accessPrinterList(accessor, modify);
-		// TODO stub
-		
-	}
-
-	public static void removePrinter(HttpServletRequest request, PrintWriter out) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	private static int resolveID(HttpServletRequest request) {
 		String IDString = request.getParameter("ID");

@@ -82,7 +82,7 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 				while (i.hasMoreElements()) {
 					String next = i.nextElement();
 					if (next.startsWith("printer")) {
-						String code = next.replaceFirst("printer", "");
+						String code = next.substring("printer".length());
 						String printerName = pl.getPrinterByID(code);
 						if (printerName != null) pl.setActive(printerName, request.getParameter(next).equals("active"));
 					}
@@ -213,7 +213,7 @@ if (!Database.isDomainCodeSet()) {
     <br>
 	<div class = "buttons">
 	<div class="box" style="width:50%;float:left;" >
-		<a href="https://en.wikipedia.org/wiki/User_(computing)" class="button" style="width:48%;float:left">  Edit Users  </a>
+		<a href="users.jsp" class="button" style="width:48%;float:left">  Edit Users  </a>
 		<a class="tinyspace"> </a>
 		<a href="printers.jsp" class="button" style="width:48%">  Edit Printers  </a>
 		<a class="tinyspace"> </a>
@@ -250,15 +250,15 @@ if (!Database.isDomainCodeSet()) {
 					printersOut.append("<tr>");
 					printersOut.append("<td"+tdStyle+">"+printer+"</td>");
 					printersOut.append(
-						  "<td"+tdStyle+"><input id=\"rb"+radioId+"\" type=\"radio\" onChange=\"this.form.submit();\""
-						+ " name=\"printer"+pl.getPrinterID(printer)+"\" value=\"active\""+activeChecked+">"
-						+ "<label for=\"rb"+radioId+"\">Active</label></td>");
+							  "<td"+tdStyle+"><input id=\"rb"+radioId+"\" type=\"radio\" onChange=\"this.form.submit();\""
+							+ " name=\"printer"+pl.getPrinterID(printer)+"\" value=\"active\""+activeChecked+">"
+							+ "<label for=\"rb"+radioId+"\">Active</label></td>");
 					radioId++;
 					printersOut.append(
 							  "<td"+tdStyle+"><input id=\"rb"+radioId+"\" type=\"radio\" onChange=\"this.form.submit();\""
 							+ " name=\"printer"+pl.getPrinterID(printer)+"\" value=\"maintenance\""+maintenanceChecked+">"
 							+ "<label for=\"rb"+radioId+"\">Maintenance</label></td>");
-						radioId++;
+					radioId++;
 					
 					printersOut.append("</tr>");
 				}
