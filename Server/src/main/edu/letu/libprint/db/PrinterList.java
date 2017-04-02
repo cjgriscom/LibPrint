@@ -120,6 +120,15 @@ public class PrinterList implements Serializable {
 	}
 	
 	/**
+	 * Check if the list contains the given printer
+	 * @param printerName
+	 * @return
+	 */
+	public boolean printerExists(String printerName) {
+		return getPrinterNames().contains(printerName);
+	}
+	
+	/**
 	 * Returns an integer ID suitable for URL parameters
 	 * @param printerName
 	 * @return

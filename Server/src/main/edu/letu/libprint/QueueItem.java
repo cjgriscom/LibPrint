@@ -23,6 +23,7 @@ public class QueueItem {
 	private int ID;
 	
 	QueueItem(File location, String username, String printerName, String computer, String filename, int pages, String totalCost, int ID) {
+		this.location = location;
 		this.username = username;
 		this.printerName = printerName;
 		this.computer = computer;

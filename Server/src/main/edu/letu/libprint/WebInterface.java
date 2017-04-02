@@ -29,6 +29,18 @@ public class WebInterface {
 		out.println("]}");
 	}
 
+	public static String getSystemPrintersOptionList() {
+		StringBuilder sb = new StringBuilder();
+		for (String printer : PrintDispatch.listSystemPrinters()) {
+			sb.append("<option value=\"");
+			sb.append(printer);
+			sb.append("\">");
+			sb.append(printer);
+			sb.append("</option>\n");
+		}
+		return sb.toString();
+	}
+
 	public static void acceptPrint(HttpServletRequest request, PrintWriter out) {
 		final int ID = resolveID(request);
 		

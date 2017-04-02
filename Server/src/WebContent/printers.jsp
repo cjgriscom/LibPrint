@@ -1,3 +1,5 @@
+<%@page import="java.util.Arrays"%>
+<%@page import="edu.letu.libprint.PrintDispatch"%>
 <%@page import="edu.letu.libprint.ClientInterface"%>
 <%@page import="edu.letu.libprint.Util"%>
 <%@page import="edu.letu.libprint.WebInterface"%>
@@ -28,6 +30,29 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 					pl.removePrinter(printerName);
 				}
 			}}, false);
+	} else if (req.equals("addPrinter")) {
+		Database.accessPrinterList(new Consumer<PrinterList>(){
+			public void accept(PrinterList pl) {
+				final String printerName = request.getParameter("printerName");
+				final String systemName = request.getParameter("systemName");
+				final String studentPrice = request.getParameter("studentPrice");
+				final String patronPrice = request.getParameter("patronPrice");
+				if (printerName == null || systemName == null || studentPrice == null || patronPrice == null) {
+					errMsg.set("Request incomplete.");
+				} else if (pl.printerExists(printerName)) { // Printer exists
+					errMsg.set("That printer already exists.");
+				} else if (!Arrays.asList(PrintDispatch.listSystemPrinters()).contains(systemName)) { // Printer exists
+					errMsg.set("The system printer specified does not exist.");
+				} else {
+					try {
+						double studentPriceDouble = Double.parseDouble(studentPrice);
+						double patronPriceDouble = Double.parseDouble(patronPrice);
+						pl.addPrinter(printerName, systemName, true, patronPriceDouble, studentPriceDouble);
+					} catch (NumberFormatException e) {
+						errMsg.set("Please enter the price per page in the following format: x.xx");
+					}
+				}
+			}}, true);
 		
 	} else if (req.equals("logout")) {
 		session.removeAttribute("user");
@@ -92,7 +117,7 @@ if (!WebInterface.validateJSPSession(session, errMsg, false, true)) {
 	<tr>
 		<th>Printer Name</th>
 		<th>Actual Name</th>
-		<th>Student Price</th>
+		<th>Student Price Per Page</th>
 		<th>Public Patron Price</th>
 		<th>Action</th>
 	</tr>
@@ -113,6 +138,15 @@ if (!WebInterface.validateJSPSession(session, errMsg, false, true)) {
 				}
 			}
 		}, false);
+		
+		printersOut.append("<tr>");
+		printersOut.append("<td><input name=\"printerName\" placeholder=\"New Printer Name\"/></td>");
+		printersOut.append("<td><select name=\"systemName\">"+WebInterface.getSystemPrintersOptionList()+"</select></td>");
+		printersOut.append("<td><input name=\"studentPrice\" placeholder=\"Student Price\"/></td>");
+		printersOut.append("<td><input name=\"patronPrice\" placeholder=\"Patron Price\"/></td>");
+		printersOut.append("<td><button type=\"submit\" class=\"button\" name=\"request\" value=\"addPrinter\">Add New</button></td>");
+		printersOut.append("</tr>");
+		
 		out.println(printersOut);
 		%>
     </table>
