@@ -133,7 +133,7 @@ if (!WebInterface.validateJSPSession(session, errMsg, false, true)) {
 					printersOut.append("<td>"+pl.getWindowsPrinterName(printer)+"</td>");
 					printersOut.append("<td>"+Util.formatPrice(pl.getStudentPrice(printer))+"</td>");
 					printersOut.append("<td>"+Util.formatPrice(pl.getPatronPrice(printer))+"</td>");
-					printersOut.append("<td><button type=\"submit\" class=\"button\" name=\"request\" value=\"deletePrinter"+printer.hashCode()+"\">Delete</button></td>");
+					printersOut.append("<td><button type=\"submit\" class=\"button\" name=\"request\" value=\"deletePrinter"+pl.getPrinterID(printer)+"\">Delete</button></td>");
 					printersOut.append("</tr>");
 				}
 			}
