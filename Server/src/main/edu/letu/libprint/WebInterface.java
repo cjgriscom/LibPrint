@@ -1,5 +1,6 @@
 package edu.letu.libprint;
 
+import java.awt.print.PrinterException;
 import java.io.PrintWriter;
 
 import javax.print.PrintService;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpSession;
 import com.quirkygaming.propertylib.MutableProperty;
 
 import edu.letu.libprint.db.Database;
+import edu.letu.libprint.db.UserList;
+import edu.letu.libprint.db.UserList.AccessLevel;
 
 public class WebInterface {
 	public static void handleListQueue(HttpServletRequest request, PrintWriter out) {
@@ -40,6 +43,25 @@ public class WebInterface {
 		}
 		return sb.toString();
 	}
+	
+	public static boolean canModifyAccessLevel(UserList ul, String currentUser, AccessLevel other) {
+		return ul.getAccessLevel(currentUser).powerLevel() >= other.powerLevel();
+	}
+
+	public static String getAccessPolicyOptionList(UserList ul, String currentUser) {
+		
+		StringBuilder sb = new StringBuilder();
+		for (AccessLevel level : AccessLevel.values()) {
+			// Only list power levels less or equal to the current user
+			if (!canModifyAccessLevel(ul, currentUser, level)) continue;
+			sb.append("<option value=\"");
+			sb.append(level.name());
+			sb.append("\">");
+			sb.append(level.toString());
+			sb.append("</option>\n");
+		}
+		return sb.toString();
+	}
 
 	public static void acceptPrint(HttpServletRequest request, PrintWriter out) {
 		final int ID = resolveID(request);
@@ -65,6 +87,10 @@ public class WebInterface {
 							try {
 								PrintDispatch.printDocument(item.getLocation(), printer);
 								printJsonMessage(out, "The item was sent to the printer.", false);
+							} catch (PrinterException e) {
+								printJsonMessage(out, "A printer exception while dispatching the print: " + 
+										e.getClass() + " " + e.getMessage() + 
+										". Make sure the web server user has print permission.", true);
 							} catch (Exception e) {
 								e.printStackTrace();
 								printJsonMessage(out, "An unexpected error occured while dispatching the print: " + e.getClass() + " " + e.getMessage(), true);
@@ -126,22 +152,39 @@ public class WebInterface {
 		return ID;
 	}
 	
+	public static String getCurrentUser(HttpSession session) {
+		if (!sessionValid(session)) return null;
+		return (String) session.getAttribute("user");
+	}
+	
+	/**
+	 * A valid session has a "user" attribute and must not be older than the configured amount of time.
+	 * @param session
+	 * @return
+	 */
 	public static boolean sessionValid(HttpSession session) {
 		if (session != null && session.getAttribute("user") != null) {
-			
-			return true; // TODO validate user
+			return (System.currentTimeMillis() - session.getCreationTime()) < Database.getSessionExpirationTimeMillis();
 		} else {
 			return false;
 		}
 	}
 	
+	/**
+	 * Verify that the current user exists and has the requested permissions (JSP, MutableProperty version)
+	 * @param session
+	 * @param error Set to a plaintext error message if an error occurs
+	 * @param reqUserPerms
+	 * @param reqPrintPerms
+	 * @return
+	 */
 	public static boolean validateJSPSession(HttpSession session, MutableProperty<String> error, boolean reqUserPerms, boolean reqPrintPerms) {
 		if (sessionValid(session)) {
-			String user = (String) session.getAttribute("user");
+			String user = getCurrentUser(session);
 			Database.accessUserList((ul) -> {
 				if (ul.userExists(user)) {
 					if (ul.hasUserAccess(user) || !reqUserPerms) {
-						if (!ul.hasPrinterAccess(user) || !reqPrintPerms) {
+						if (ul.hasPrinterAccess(user) || !reqPrintPerms) {
 							error.set(""); // All good
 						} else {
 							error.set("You do not have permission to edit printers.");
@@ -160,6 +203,14 @@ public class WebInterface {
 		}
 	}
 	
+	/**
+	 * Verify that the current user exists and has the requested permissions (servlet output stream version)
+	 * @param session
+	 * @param out Used to output errors
+	 * @param reqUserPerms
+	 * @param reqPrintPerms
+	 * @return
+	 */
 	public static boolean validateSession(HttpSession session, PrintWriter out, boolean reqUserPerms, boolean reqPrintPerms) {
 		MutableProperty<String> error = MutableProperty.newProperty(null);
 		boolean success = validateJSPSession(session, error, reqUserPerms, reqPrintPerms);

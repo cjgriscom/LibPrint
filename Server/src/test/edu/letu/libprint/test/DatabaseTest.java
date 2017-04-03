@@ -7,6 +7,7 @@ import com.quirkygaming.propertylib.MutableProperty;
 
 import edu.letu.libprint.PropertyDBListener;
 import edu.letu.libprint.db.Database;
+import edu.letu.libprint.db.UserList.AccessLevel;
 
 public class DatabaseTest extends TestClass {
 	boolean addListAndRemoveUser(final PrintWriter out) {
@@ -62,7 +63,7 @@ public class DatabaseTest extends TestClass {
 		out.println("Adding user: retentiontest");
 		Database.accessUserList((userList) -> {
 			userList.addUser("retentiontest", "testPWD".toCharArray());
-			userList.setAccessPolicies("retentiontest", true, false);
+			userList.setAccessPolicies("retentiontest", AccessLevel.Printer_Manager);
 		}, true);
 		
 		out.println("Adding printer: retentiontest");

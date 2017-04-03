@@ -15,6 +15,11 @@
 final MutableProperty<String> errMsg = MutableProperty.newProperty("");
 final MutableProperty<Boolean> valid = MutableProperty.newProperty(false);
 
+if (!WebInterface.validateJSPSession(session, errMsg, false, true)) {
+	response.sendRedirect("index.jsp" + (errMsg.equals("") ? "" : "?error=" + Util.sanitizeURL(errMsg.get())));
+	return;
+}
+
 if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("request") != null) {
 
 	final String req = request.getParameter("request");
@@ -29,7 +34,7 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 				} else {
 					pl.removePrinter(printerName);
 				}
-			}}, false);
+			}}, true);
 	} else if (req.equals("addPrinter")) {
 		Database.accessPrinterList(new Consumer<PrinterList>(){
 			public void accept(PrinterList pl) {
@@ -63,11 +68,6 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 	response.sendRedirect("printers.jsp" + (errMsg.equals("") ? "" : "?error=" + Util.sanitizeURL(errMsg.get())));
 	return;
 }
-
-if (!WebInterface.validateJSPSession(session, errMsg, false, true)) {
-	response.sendRedirect("index.jsp" + (errMsg.equals("") ? "" : "?error=" + Util.sanitizeURL(errMsg.get())));
-	return;
-} else { 
 %>
 
 <!DOCTYPE html>
@@ -159,6 +159,3 @@ if (!WebInterface.validateJSPSession(session, errMsg, false, true)) {
 </body>
 
 </html>
-
-
-<% } %>

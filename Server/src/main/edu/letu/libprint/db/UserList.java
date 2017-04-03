@@ -14,6 +14,35 @@ import edu.letu.libprint.Util;
  *
  */
 public class UserList implements Serializable {
+	
+	public static enum AccessLevel {
+		
+		Default(false, false, false, 10), 
+		Printer_Manager(true, false, false, 20), 
+		Administrator(true, true, false, 30), 
+		System(true, true, true, 100);
+		
+		private boolean printerAccess, userAccess, systemAccess;
+		private int power;
+		
+		private AccessLevel(boolean printerAccess, boolean userAccess, boolean systemAccess, int power) {
+			this.printerAccess = printerAccess;
+			this.userAccess = userAccess;
+			this.systemAccess = systemAccess;
+			this.power = power;
+		}
+		
+		public String toString() {
+			return super.toString().replace('_', ' ');
+		}
+		
+		public boolean hasPrinterAccess() {return printerAccess;}
+		public boolean hasUserAccess() {return userAccess;}
+		public boolean hasSystemAccess() {return systemAccess;}
+		
+		public int powerLevel() {return power;}
+	}
+	
 	private static final long serialVersionUID = 1L;
 	
 	// User parameters, organized by username.
@@ -21,13 +50,11 @@ public class UserList implements Serializable {
 	//      than having a separate User class.
 	
 	private TreeMap<String, String> passwordHashes = null;
-	private TreeMap<String, Boolean> printerAccess = null;
-	private TreeMap<String, Boolean> userAccess = null;
+	private TreeMap<String, AccessLevel> accessLevels = null;
 	
 	private void init() {
 		if (passwordHashes == null) passwordHashes = new TreeMap<>();
-		if (printerAccess == null) printerAccess = new TreeMap<>();
-		if (userAccess == null) userAccess = new TreeMap<>();
+		if (accessLevels == null) accessLevels = new TreeMap<>();
 	}
 	
 	/**
@@ -64,8 +91,7 @@ public class UserList implements Serializable {
 	 */
 	public void addUser(String username, char[] password) {
 		passwordHashes.put(username, Util.hashPassword(password));
-		printerAccess.put(username, false);
-		userAccess.put(username, false);
+		accessLevels.put(username, AccessLevel.Default);
 	}
 	
 	/**
@@ -73,10 +99,9 @@ public class UserList implements Serializable {
 	 * @param username A unique username
 	 * @param password Plaintext password (will be hashed)
 	 */
-	public void addAdmin(String username, char[] password) {
+	public void addSysadmin(String username, char[] password) {
 		passwordHashes.put(username, Util.hashPassword(password));
-		printerAccess.put(username, true);
-		userAccess.put(username, true);
+		accessLevels.put(username, AccessLevel.System);
 	}
 	
 	/**
@@ -85,8 +110,7 @@ public class UserList implements Serializable {
 	 */
 	public void removeUser(String username) {
 		passwordHashes.remove(username);
-		printerAccess.remove(username);
-		userAccess.remove(username);
+		accessLevels.remove(username);
 	}
 	
 	/**
@@ -94,8 +118,7 @@ public class UserList implements Serializable {
 	 */
 	public void clear() {
 		passwordHashes.clear();
-		printerAccess.clear();
-		userAccess.clear();
+		accessLevels.clear();
 	}
 	
 	/**
@@ -120,9 +143,8 @@ public class UserList implements Serializable {
 	 * @param username
 	 * @param password A plaintext password
 	 */
-	public void setAccessPolicies(String username, boolean printerAccess, boolean userAccess) {
-		this.printerAccess.put(username, printerAccess);
-		this.userAccess.put(username, userAccess);
+	public void setAccessPolicies(String username, AccessLevel accessLevel) {
+		this.accessLevels.put(username, accessLevel);
 	}
 	
 	/**
@@ -150,7 +172,7 @@ public class UserList implements Serializable {
 	 * @return Whether or not the user can modify printer policies
 	 */
 	public boolean hasPrinterAccess(String username) {
-		return printerAccess.get(username);
+		return accessLevels.get(username).hasPrinterAccess();
 	}
 	
 	/**
@@ -159,6 +181,24 @@ public class UserList implements Serializable {
 	 * @return Whether or not the user can modify user policies
 	 */
 	public boolean hasUserAccess(String username) {
-		return userAccess.get(username);
+		return accessLevels.get(username).hasUserAccess();
+	}
+	
+	/**
+	 * 
+	 * @param username
+	 * @return Whether or not the user can modify system policies
+	 */
+	public boolean hasSystemAccess(String username) {
+		return accessLevels.get(username).hasSystemAccess();
+	}
+	
+	/**
+	 * 
+	 * @param username
+	 * @return The user's access level
+	 */
+	public AccessLevel getAccessLevel(String username) {
+		return accessLevels.get(username);
 	}
 }

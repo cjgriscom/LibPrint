@@ -33,7 +33,7 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 				} else {
 					Database.accessUserList(new Consumer<UserList>() {public void accept(final UserList userList) {
 						userList.clear();
-						userList.addAdmin(username, password.toCharArray());
+						userList.addSysadmin(username, password.toCharArray());
 					}}, true);
 
 					Database.setDomainCode(domainCode);

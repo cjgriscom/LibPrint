@@ -99,21 +99,43 @@ public class Database { // Persistent Database Accessor
 		if (modify) printerList.update(); // Tell PropertyDB to sync the object after modification
 		return ret;
 	}
-
+	
+	/**
+	 * Domain code is set on initial server configuration
+	 * @return
+	 */
 	public static boolean isDomainCodeSet() {
 		return domainCode.get() != null;
 	}
 	
+	/**
+	 * Set the domain code (used to synchronize client and server security)
+	 * @param newCode
+	 */
 	public static void setDomainCode(String newCode) {
 		domainCode.set(newCode);
 		domainCode.update();
 	}
 	
+	/**
+	 * Get the domain code
+	 * @return
+	 * @throws UndefinedDomainCodeException if it has not been set yet
+	 */
 	public static String getDomainCode() throws UndefinedDomainCodeException {
 		if (isDomainCodeSet()) {
 			return domainCode.get();
 		} else {
 			throw new UndefinedDomainCodeException();
 		}
+	}
+	
+	/**
+	 * This could be used to make a configurable expiration time
+	 * @return
+	 */
+	public static long getSessionExpirationTimeMillis() {
+		// Default to 15 hours
+		return 1000*60*60*15;
 	}
 }
