@@ -1,0 +1,33 @@
+c:\users\robert\documents\visual studio 2015\Projects\LibPrintClient\LibPrintClient\bin\Debug\LibPrintClient.exe.config
+c:\users\robert\documents\visual studio 2015\Projects\LibPrintClient\LibPrintClient\bin\Debug\LibPrintClient.exe
+c:\users\robert\documents\visual studio 2015\Projects\LibPrintClient\LibPrintClient\bin\Debug\LibPrintClient.pdb
+c:\users\robert\documents\visual studio 2015\Projects\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.csprojResolveAssemblyReference.cache
+c:\users\robert\documents\visual studio 2015\Projects\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.PrinterSelect.resources
+c:\users\robert\documents\visual studio 2015\Projects\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.PrintError.resources
+c:\users\robert\documents\visual studio 2015\Projects\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.Properties.Resources.resources
+c:\users\robert\documents\visual studio 2015\Projects\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.csproj.GenerateResource.Cache
+c:\users\robert\documents\visual studio 2015\Projects\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.exe
+c:\users\robert\documents\visual studio 2015\Projects\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.pdb
+c:\users\robert\documents\visual studio 2015\Projects\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.ConfirmationWindow.resources
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\bin\Debug\LibPrintClient.exe.config
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.exe
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.pdb
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.csprojResolveAssemblyReference.cache
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.ConfirmationWindow.resources
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.PrinterSelect.resources
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.PrintError.resources
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.Properties.Resources.resources
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.csproj.GenerateResource.Cache
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\bin\Debug\LibPrintClient.exe
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\bin\Debug\LibPrintClient.pdb
+C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\bin\Debug\LibPrintClient.exe.config
+C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.exe
+C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.pdb
+C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\bin\Debug\LibPrintClient.exe
+C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\bin\Debug\LibPrintClient.pdb
+C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.csprojResolveAssemblyReference.cache
+C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.ConfirmationWindow.resources
+C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.PrinterSelect.resources
+C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.PrintError.resources
+C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.Properties.Resources.resources
+C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.csproj.GenerateResource.Cache
