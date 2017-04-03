@@ -44,17 +44,17 @@ namespace LibPrintClient
                 Variables.printerName = Variables.parsed[5].Split(',')[0].Trim();
             }
 
-            byte[] fileByteArray = File.ReadAllBytes(Directory.GetFiles(@"c:\ProgramData\LibPrint\cache\")[0]);
+            byte[] fileByteArray = File.ReadAllBytes(Variables.cacheFile);
 
             HttpClient httpClient = new HttpClient();
             MultipartFormDataContent form = new MultipartFormDataContent();
 
             form.Add(new StringContent("printPDF"), "request");
-            form.Add(new StringContent(System.Security.Principal.WindowsIdentity.GetCurrent().Name), "username");
-            form.Add(new StringContent(Environment.MachineName), "computer");
+            form.Add(new StringContent(Variables.username), "username");
+            form.Add(new StringContent(Variables.computer), "computer");
             form.Add(new StringContent(Variables.printerName), "printerName");
-            form.Add(new StringContent("temp"), "secToken");
-            form.Add(new ByteArrayContent(fileByteArray, 0, fileByteArray.Count()), "file", Directory.GetFiles(@"c:\ProgramData\LibPrint\cache\")[0]);
+            form.Add(new StringContent(Variables.GenerateSecToken("temp", Variables.username, Variables.computer)), "secToken");
+            form.Add(new ByteArrayContent(fileByteArray, 0, fileByteArray.Count()), "file", Variables.cacheFile);
             HttpResponseMessage response = await httpClient.PostAsync(Variables.libprinturl, form);
 
             response.EnsureSuccessStatusCode();
@@ -88,6 +88,7 @@ namespace LibPrintClient
 
         void SelectCancel(Object sender, EventArgs e)
         {
+            File.Delete(Variables.cacheFile);
             Application.Exit();
         }
 
