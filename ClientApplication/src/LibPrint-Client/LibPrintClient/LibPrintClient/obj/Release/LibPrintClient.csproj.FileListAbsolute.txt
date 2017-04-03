@@ -1,0 +1,10 @@
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\bin\Release\LibPrintClient.exe.config
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\bin\Release\LibPrintClient.exe
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\bin\Release\LibPrintClient.pdb
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Release\LibPrintClient.ConfirmationWindow.resources
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Release\LibPrintClient.PrinterSelect.resources
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Release\LibPrintClient.PrintError.resources
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Release\LibPrintClient.Properties.Resources.resources
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Release\LibPrintClient.csproj.GenerateResource.Cache
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Release\LibPrintClient.exe
+C:\Users\Robert\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Release\LibPrintClient.pdb

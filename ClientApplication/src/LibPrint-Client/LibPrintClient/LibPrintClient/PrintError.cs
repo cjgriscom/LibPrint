@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace LibPrintClient
 {
@@ -23,6 +24,10 @@ namespace LibPrintClient
 
         void SelectOK(Object sender, EventArgs e)
         {
+            if(Directory.GetFiles(@"c:\ProgramData\LibPrint\cache\").Length != 0)
+            {
+                File.Delete(Variables.cacheFile);
+            }
             Application.Exit();
         }
     }
