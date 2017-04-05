@@ -20,6 +20,9 @@ public class Database { // Persistent Database Accessor
 	private static MutableProperty<UserList> userList;
 	private static MutableProperty<PrinterList> printerList;
 	private static MutableProperty<String> domainCode;
+	private static MutableProperty<Integer> maxDocsPerUser;
+	private static MutableProperty<Integer> maxQueueLength;
+	private static MutableProperty<Long> sessionExpirationTime;
 	
 	private Database() {}
 	
@@ -42,6 +45,21 @@ public class Database { // Persistent Database Accessor
 		domainCode = PropertyDB.initiateProperty(
 				Util.getStorageRoot(), "DomainCode", CONFIG_VERSION,
 				null, pdb_handler);
+		
+		// Initialize the maxDocsPerUser
+		maxDocsPerUser = PropertyDB.initiateProperty(
+				Util.getStorageRoot(), "MaxDocsPerUser", CONFIG_VERSION,
+				3, pdb_handler); // Default to 3
+		
+		// Initialize the MaxQueueLength
+		maxQueueLength = PropertyDB.initiateProperty(
+				Util.getStorageRoot(), "MaxQueueLength", CONFIG_VERSION,
+				30, pdb_handler); // Default to 30
+		
+		// Initialize the sessionExpirationTime
+		sessionExpirationTime = PropertyDB.initiateProperty(
+				Util.getStorageRoot(), "SessionExpirationTime", CONFIG_VERSION,
+				1000l*60*60*15, pdb_handler); // Default to 15 hours
 	}
 	
 	/**
@@ -118,6 +136,33 @@ public class Database { // Persistent Database Accessor
 	}
 	
 	/**
+	 * 
+	 * @param maxQueueLength
+	 */
+	public static void setMaxQueueLength(int mql) {
+		maxQueueLength.set(mql);
+		maxQueueLength.update();
+	}
+	
+	/**
+	 * 
+	 * @param maxDocsPerUser
+	 */
+	public static void setMaxDocsPerUser(int mdu) {
+		maxDocsPerUser.set(mdu);
+		maxDocsPerUser.update();
+	}
+	
+	/**
+	 * 
+	 * @param time
+	 */
+	public static void setSessionExpirationTimeMillis(long time) {
+		sessionExpirationTime.set(time);
+		sessionExpirationTime.update();
+	}
+	
+	/**
 	 * Get the domain code
 	 * @return
 	 * @throws UndefinedDomainCodeException if it has not been set yet
@@ -131,11 +176,29 @@ public class Database { // Persistent Database Accessor
 	}
 	
 	/**
+	 * Get max docs that can be submitted per user
+	 * @return
+	 */
+	public static int getMaxDocsPerUser() {
+		// Default to 3
+		return maxDocsPerUser.get();
+	}
+
+	/**
+	 * Get max docs that can be in the queue at once
+	 * @return
+	 */
+	public static int maxQueueLength() {
+		// Default to 30
+		return maxQueueLength.get();
+	}
+	
+	/**
 	 * This could be used to make a configurable expiration time
 	 * @return
 	 */
 	public static long getSessionExpirationTimeMillis() {
 		// Default to 15 hours
-		return 1000*60*60*15;
+		return sessionExpirationTime.get();
 	}
 }

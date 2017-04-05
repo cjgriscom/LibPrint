@@ -141,7 +141,7 @@ if (!Database.isDomainCodeSet()) {
 	<br><br>
 	<input name="setpassword2" type="password" placeholder="Confirm Password" style="width:40%; height:30px;"/>
 	<br><br>
-	<button type="submit" style="width:40%; height:30px;">Log In</button>
+	<button type="submit" style="width:40%; height:30px;">Begin</button>
 	</form>
 	</div>
 	<br><br><br><br><br><br><br><br><br>
@@ -213,10 +213,12 @@ if (!Database.isDomainCodeSet()) {
     <br>
 	<div class = "buttons">
 	<div class="box" style="width:50%;float:left;" >
-		<a href="users.jsp" class="button" style="width:48%;float:left">  Edit Users  </a>
-		<a class="tinyspace"> </a>
-		<a href="printers.jsp" class="button" style="width:48%">  Edit Printers  </a>
-		<a class="tinyspace"> </a>
+		<a href="users.jsp" class="button" style="width:32%;float:left">  Edit Users  </a>
+		<a class="tinyspace">&nbsp;</a>
+		<a href="printers.jsp" class="button" style="width:32%;float:left">  Edit Printers  </a>
+		<a class="tinyspace">&nbsp;</a>
+		<a href="system.jsp" class="button" style="width:32%;float:left">  Edit Server Settings  </a>
+		<a class="tinyspace">&nbsp;</a>
 	
 	</div>
 	<a class="tinyspace"> </a>

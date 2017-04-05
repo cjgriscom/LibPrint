@@ -23,16 +23,11 @@ public class PrinterList implements Serializable {
 	private TreeMap<String, Double> patronPrices = new TreeMap<>();
 	private TreeMap<String, Double> studentPrices = new TreeMap<>();
 	
-	private Integer maxQueueLength = null;
-	private Integer maxUserDocs = null;
-	
 	private void init() {
 		if (active == null) active = new TreeMap<>();
 		if (windowsNames == null) windowsNames = new TreeMap<>();
 		if (patronPrices == null) patronPrices = new TreeMap<>();
 		if (studentPrices == null) studentPrices = new TreeMap<>();
-		if (maxQueueLength == null) maxQueueLength = 30; // Default
-		if (maxUserDocs == null) maxUserDocs = 3; // Default
 	}
 	
 	/**
@@ -182,22 +177,6 @@ public class PrinterList implements Serializable {
 	 */
 	public double getStudentPrice(String printerName) {
 		return studentPrices.get(printerName);
-	}
-	
-	/**
-	 * 
-	 * @return The configurable maximum length of the queue
-	 */
-	public int getMaxQueueLength() {
-		return maxQueueLength;
-	}
-	
-	/**
-	 * 
-	 * @return The configurable maximum documents that may be submitted by one user at a time
-	 */
-	public int getMaxDocsPerUser() {
-		return maxUserDocs;
 	}
 	
 	/**

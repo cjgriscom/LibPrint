@@ -99,10 +99,12 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
     <br>
 	<div class = "buttons">
 	<div class="box" style="width:50%;float:left;" >
-		<a href="index.jsp" class="button" style="width:48%;float:left">  Administration  </a>
-		<a class="tinyspace"> </a>
-		<a href="printers.jsp" class="button" style="width:48%">  Edit Printers  </a>
-		<a class="tinyspace"> </a>
+		<a href="index.jsp" class="button" style="width:32%;float:left">  Administration  </a>
+		<a class="tinyspace">&nbsp;</a>
+		<a href="printers.jsp" class="button" style="width:32%;float:left">  Edit Printers  </a>
+		<a class="tinyspace">&nbsp;</a>
+		<a href="system.jsp" class="button" style="width:32%;float:left">  Edit Server Settings  </a>
+		<a class="tinyspace">&nbsp;</a>
 	
 	</div>
 	<a class="tinyspace"> </a>
@@ -133,22 +135,17 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 			public void accept(UserList ul) {
 				for (String username : ul.getUsernames()) {
 					boolean disabled = currentUser.equals(username) || !WebInterface.canModifyAccessLevel(ul, currentUser, ul.getAccessLevel(username));
+					usersOut.append("<tr>");
+					usersOut.append("<td>"+username+"</td>");
+					usersOut.append("<td>Change Password</td>");
+					usersOut.append("<td>"+ul.getAccessLevel(username)+"</td>");
 					if (disabled) {
-						usersOut.append("<tr>");
-						usersOut.append("<td>"+username+"</td>");
-						usersOut.append("<td>Change Password</td>");
-						usersOut.append("<td>"+ul.getAccessLevel(username)+"</td>");
-						usersOut.append("<td> </td>");
-						usersOut.append("</tr>");
+						usersOut.append("<td><button class=\"button\" disabled> </button></td>");
 					} else {
-						usersOut.append("<tr>");
-						usersOut.append("<td>"+username+"</td>");
-						usersOut.append("<td>Change Password</td>");
-						usersOut.append("<td>"+ul.getAccessLevel(username)+"</td>");
 						usersOut.append("<td><button type=\"submit\" class=\"button\" name=\"request\" value=\"deleteUser"+username+"\">Delete</button></td>");
-						usersOut.append("</tr>");
+						
 					}
-					
+					usersOut.append("</tr>");
 				}
 				
 				usersOut.append("<tr>");

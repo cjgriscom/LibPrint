@@ -64,6 +64,10 @@ body {
 	text-overflow: ellipsis;
 	cursor: pointer;
 }
+.button:disabled {
+	background-color: #CCC;
+    cursor: auto;
+}
 .button:hover {
     background-color: #CCC;
 }

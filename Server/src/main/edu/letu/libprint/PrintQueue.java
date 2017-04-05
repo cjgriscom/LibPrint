@@ -12,13 +12,7 @@ public class PrintQueue {
 	public ArrayList<QueueItem> queue = new ArrayList<QueueItem>();
 	private static final PrintQueue INSTANCE = new PrintQueue();
 	
-	private PrintQueue() {
-		// TODO remove examples
-		add(null, "chandlergriscom", "Black and White", "S1", "example.doc", 5, "Free");
-		add(null, "LibraryGuest1", "Color", "S3", "example.doc", 1, "$0.50");
-		add(null, "LibraryGuest1", "Black and White", "S3", "example2.doc", 1, "$0.10");
-		add(null, "LibraryGuest1", "Color", "S3", "example3.doc", 3, "$1.50");
-	}
+	private PrintQueue() {}
 	
 
 	/**

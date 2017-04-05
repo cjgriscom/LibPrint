@@ -75,13 +75,9 @@ public class ClientInterface {
 					+ "Please try again later.", out);
 		}
 		
-		int maxQueueItems = Database.accessPrinterList((printerList) -> {
-			return printerList.getMaxQueueLength();
-		}, false);
+		int maxQueueItems = Database.maxQueueLength();
 		
-		int maxUserDocs = Database.accessPrinterList((printerList) -> {
-			return printerList.getMaxDocsPerUser();
-		}, false);
+		int maxUserDocs = Database.getMaxDocsPerUser();
 		
 		int queueSize = PrintQueue.access((printQueue) -> {return printQueue.waitingSize();});
 		

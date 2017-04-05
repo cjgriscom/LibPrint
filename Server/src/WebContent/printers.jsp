@@ -92,10 +92,12 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
     <br>
 	<div class = "buttons">
 	<div class="box" style="width:50%;float:left;" >
-		<a href="users.jsp" class="button" style="width:48%;float:left">  Edit Users  </a>
-		<a class="tinyspace"> </a>
-		<a href="index.jsp" class="button" style="width:48%">  Administration  </a>
-		<a class="tinyspace"> </a>
+		<a href="users.jsp" class="button" style="width:32%;float:left">  Edit Users  </a>
+		<a class="tinyspace">&nbsp;</a>
+		<a href="index.jsp" class="button" style="width:32%;float:left">  Administration  </a>
+		<a class="tinyspace">&nbsp;</a>
+		<a href="system.jsp" class="button" style="width:32%;float:left">  Edit Server Settings  </a>
+		<a class="tinyspace">&nbsp;</a>
 	
 	</div>
 	<a class="tinyspace"> </a>

@@ -178,19 +178,23 @@ public class WebInterface {
 	 * @param reqPrintPerms
 	 * @return
 	 */
-	public static boolean validateJSPSession(HttpSession session, MutableProperty<String> error, boolean reqUserPerms, boolean reqPrintPerms) {
+	public static boolean validateJSPSession(HttpSession session, MutableProperty<String> error, boolean reqUserPerms, boolean reqPrintPerms, boolean reqSystemPerms) {
 		if (sessionValid(session)) {
 			String user = getCurrentUser(session);
 			Database.accessUserList((ul) -> {
 				if (ul.userExists(user)) {
-					if (ul.hasUserAccess(user) || !reqUserPerms) {
-						if (ul.hasPrinterAccess(user) || !reqPrintPerms) {
-							error.set(""); // All good
+					if (ul.hasSystemAccess(user) || !reqSystemPerms) {
+						if (ul.hasUserAccess(user) || !reqUserPerms) {
+							if (ul.hasPrinterAccess(user) || !reqPrintPerms) {
+								error.set(""); // All good
+							} else {
+								error.set("You do not have permission to edit printers.");
+							}
 						} else {
-							error.set("You do not have permission to edit printers.");
+							error.set("You do not have permission to edit users.");
 						}
 					} else {
-						error.set("You do not have permission to edit users.");
+						error.set("You do not have permission to edit system settings.");
 					}
 				} else {
 					error.set("User " + user + " does not exist!");
@@ -201,6 +205,10 @@ public class WebInterface {
 			error.set("You are not logged in.");
 			return false;
 		}
+	}
+	
+	public static boolean validateJSPSession(HttpSession session, MutableProperty<String> error, boolean reqUserPerms, boolean reqPrintPerms) {
+		return validateJSPSession(session, error, reqUserPerms, reqPrintPerms, false);
 	}
 	
 	/**
