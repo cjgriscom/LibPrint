@@ -23,6 +23,7 @@ public class Database { // Persistent Database Accessor
 	private static MutableProperty<Integer> maxDocsPerUser;
 	private static MutableProperty<Integer> maxQueueLength;
 	private static MutableProperty<Long> sessionExpirationTime;
+	private static MutableProperty<Integer> docExpirationTimeMinutes;
 	
 	private Database() {}
 	
@@ -60,6 +61,10 @@ public class Database { // Persistent Database Accessor
 		sessionExpirationTime = PropertyDB.initiateProperty(
 				Util.getStorageRoot(), "SessionExpirationTime", CONFIG_VERSION,
 				1000l*60*60*15, pdb_handler); // Default to 15 hours
+		
+		docExpirationTimeMinutes = PropertyDB.initiateProperty(
+				Util.getStorageRoot(), "DocExpirationTimeMinutes", CONFIG_VERSION,
+				60, pdb_handler); // Default to 60 minutes
 	}
 	
 	/**
@@ -163,6 +168,15 @@ public class Database { // Persistent Database Accessor
 	}
 	
 	/**
+	 * 
+	 * @param time
+	 */
+	public static void setDocExpirationTimeMinutes(int time) {
+		docExpirationTimeMinutes.set(time);
+		docExpirationTimeMinutes.update();
+	}
+	
+	/**
 	 * Get the domain code
 	 * @return
 	 * @throws UndefinedDomainCodeException if it has not been set yet
@@ -180,7 +194,6 @@ public class Database { // Persistent Database Accessor
 	 * @return
 	 */
 	public static int getMaxDocsPerUser() {
-		// Default to 3
 		return maxDocsPerUser.get();
 	}
 
@@ -189,7 +202,6 @@ public class Database { // Persistent Database Accessor
 	 * @return
 	 */
 	public static int maxQueueLength() {
-		// Default to 30
 		return maxQueueLength.get();
 	}
 	
@@ -198,7 +210,14 @@ public class Database { // Persistent Database Accessor
 	 * @return
 	 */
 	public static long getSessionExpirationTimeMillis() {
-		// Default to 15 hours
 		return sessionExpirationTime.get();
+	}
+	
+	/**
+	 * Get the time in minutes at which queue entries expire
+	 * @return
+	 */
+	public static int getDocExpirationTimeMinutes() {
+		return docExpirationTimeMinutes.get();
 	}
 }

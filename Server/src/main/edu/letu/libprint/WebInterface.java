@@ -74,7 +74,7 @@ public class WebInterface {
 		PrintQueue.access((printQueue) -> {
 			if (printQueue.containsID(ID)) {
 				QueueItem item = printQueue.get(ID);
-				if (item.status() == QueueItem.Status.Waiting) {
+				if (item.status() != QueueItem.Status.Expired) {
 					// Convert printer name
 					String systemPrinter = Database.accessPrinterList((printerList) -> {
 						return printerList.getWindowsPrinterName(item.getPrinterName());

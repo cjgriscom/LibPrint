@@ -61,9 +61,9 @@ function acceptPrint(id,accept) {
          });
 }
 
-function buildHtmlTable(selector, myList, buttons) {
+function buildHtmlTable(selector, myList, queue) {
 	if (myList.length <= 0) return;
-	var columns = addAllColumnHeaders(selector,myList,buttons);
+	var columns = addAllColumnHeaders(selector,myList,queue);
 	var rownum=0;
 	for (var i = myList.length - 1; i >= 0; i--) {
 		var row$ = $('<tr/>');
@@ -72,8 +72,15 @@ function buildHtmlTable(selector, myList, buttons) {
 			if (cellValue == null) cellValue = "";
 			row$.append($('<td/>').html(cellValue));
 		}
-		if (buttons) row$.append($('<td/>').html("<a onclick='acceptPrint("+myList[i].ID+",true) ' id='prb"+rownum+"' class='button bgre'> Print </a>"));
-		if (buttons) row$.append($('<td/>').html("<a onclick='acceptPrint("+myList[i].ID+",false)' id='cab"+rownum+"' class='button bred'> Cancel </a>"));
+		if (queue) row$.append($('<td/>').html("<a onclick='acceptPrint("+myList[i].ID+",true) ' id='prb"+rownum+"' class='button bgre'> Print </a>"));
+		if (queue) row$.append($('<td/>').html("<a onclick='acceptPrint("+myList[i].ID+",false)' id='cab"+rownum+"' class='button bred'> Cancel </a>"));
+		if (!queue) {
+			if (myList[i].Status === "Expired") {
+				row$.append($('<td/>').html(" - "));
+			} else {
+				row$.append($('<td/>').html("<a onclick='acceptPrint("+myList[i].ID+",true)' id='cab"+rownum+"' class='button bred'> Reprint </a>"));
+			}
+		}
 		rownum++;
 		$(selector).append(row$);
 	}
@@ -83,7 +90,7 @@ function buildHtmlTable(selector, myList, buttons) {
 // Adds a header row to the table and returns the set of columns.
 // Need to do union of keys from all records as some records may not contain
 // all records.
-function addAllColumnHeaders(selector,myList,buttons) {
+function addAllColumnHeaders(selector,myList,queue) {
 	var columnSet = [];
 	var headerTr$ = $('<tr/>');
 
@@ -96,8 +103,9 @@ function addAllColumnHeaders(selector,myList,buttons) {
 			}
 		}
 	}
-	if (buttons) headerTr$.append($('<th/>').html("Print"));
-	if (buttons) headerTr$.append($('<th/>').html("Cancel"));
+	if (queue) headerTr$.append($('<th/>').html("Print"));
+	if (queue) headerTr$.append($('<th/>').html("Cancel"));
+	if (!queue) headerTr$.append($('<th/>').html("Reprint"));
 	
 	$(selector).append(headerTr$);
 	return columnSet;

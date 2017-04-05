@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +18,14 @@ import javax.servlet.http.Part;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 
+import edu.letu.libprint.QueueItem.Status;
 import edu.letu.libprint.db.Database;
 import edu.letu.libprint.db.PrinterList;
 import edu.letu.libprint.db.UndefinedDomainCodeException;
 
 public class ClientInterface {
+	public static final ScheduledThreadPoolExecutor fileManagerExecutor = new ScheduledThreadPoolExecutor(5);
+	
 	private static enum UserType {Patron, Student, Error}
 	
 	private static File cacheDirectory = new File(Util.getStorageRoot(), "cache");
@@ -183,12 +188,23 @@ public class ClientInterface {
 		}, false);
 		
 		final File queueFile = outFile;
-		PrintQueue.access((printQueue) -> {printQueue.add(queueFile, username, printerName, computer, filename, count, totalCost);});
+		QueueItem q = PrintQueue.access((printQueue) -> {
+			return printQueue.add(queueFile, username, printerName, computer, filename, count, totalCost);
+		});
+		
+		// Delete and expire the printer after x minutes
+		fileManagerExecutor.schedule(() -> expireQueueItem(q), Database.getDocExpirationTimeMinutes(), TimeUnit.MINUTES);
 		
 		out.println("Response: OK");
 		out.println("TotalCost: " + totalCost);
 	}
 	
+	private static Object expireQueueItem(QueueItem q) {
+		q.setStatus(Status.Expired);
+		q.getLocation().delete();
+		return null;
+	}
+
 	private static File savePDF(Part filePart) throws IOException {
 		InputStream in = filePart.getInputStream();
 		File outFile = new File(cacheDirectory, UUID.randomUUID() + ".pdf");

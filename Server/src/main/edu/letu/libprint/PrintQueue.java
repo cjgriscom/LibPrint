@@ -47,9 +47,11 @@ public class PrintQueue {
 	 * @param pages
 	 * @param totalCost
 	 */
-	public void add(File location, String username, String printerName, String computer, String filename, int pages, String totalCost) {
+	public QueueItem add(File location, String username, String printerName, String computer, String filename, int pages, String totalCost) {
 		if (filename == null) filename = "untitled";
-		queue.add(new QueueItem(location, username, printerName, computer, filename, pages, totalCost, queue.size()));
+		QueueItem q = new QueueItem(location, username, printerName, computer, filename, pages, totalCost, queue.size());
+		queue.add(q);
+		return q;
 	}
 	
 	/**
