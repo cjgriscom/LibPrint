@@ -31,3 +31,6 @@ C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\De
 C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.PrintError.resources
 C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.Properties.Resources.resources
 C:\Users\morph\Source\Repos\LibPrint-Client\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\bin\Debug\LibPrintClient.exe.config
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.exe
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\obj\Debug\LibPrintClient.pdb

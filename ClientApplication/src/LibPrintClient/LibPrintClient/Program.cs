@@ -12,19 +12,27 @@ namespace LibPrintClient
 {
     static class Program
     {
+        private static bool readyGUI = false;
+        public static void initGUI()
+        {
+            if (readyGUI) return;
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            readyGUI = true;
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         public static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            initGUI();
             string result;
             string error;
 
             //check contents of cache folder
-            if (Directory.GetFiles(@"c:\ProgramData\LibPrint\cache\").Length == 0)
+            if (Directory.GetFiles(Variables.cacheDir()).Length == 0)
             {
                 error = "Response: Error\nError: No document cached for printing";
                 Variables.parsed = error.Split(new[] {':', '\n'});
