@@ -171,6 +171,18 @@ public class WebInterface {
 	}
 	
 	/**
+	 * 
+	 * @param session
+	 * @return
+	 */
+	public static boolean hasTempPassword(HttpSession session) {
+		boolean temp = Database.accessUserList((ul) -> {
+			return (Boolean) ul.hasTempPassword((String)session.getAttribute("user"));
+		}, false);
+		return temp;
+	}
+	
+	/**
 	 * Verify that the current user exists and has the requested permissions (JSP, MutableProperty version)
 	 * @param session
 	 * @param error Set to a plaintext error message if an error occurs

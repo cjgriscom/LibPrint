@@ -35,7 +35,7 @@ body {
 
 .box{
 	float:left; 
-	height: 40px;
+	/*height: 40px;*/
 }
 .buttons a {
     display: inline-block;

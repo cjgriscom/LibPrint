@@ -41,21 +41,34 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 					errMsg.set("The user could not be found.");
 				}
 			}}, true);
+	} else if (req.startsWith("resetPassword")) {
+		final String username = req.substring("resetPassword".length());
+		Database.accessUserList(new Consumer<UserList>(){
+			public void accept(UserList ul) {
+				if (ul.userExists(username)) {
+					if (WebInterface.canModifyAccessLevel(ul, currentUser, ul.getAccessLevel(username))) {
+						ul.resetPassword(username);
+					} else {
+						errMsg.set("You do not have permission to modify " + ul.getAccessLevel(username) + " users.");
+					}
+				} else {
+					errMsg.set("The user could not be found.");
+				}
+			}}, true);
 	} else if (req.equals("addUser")) {
 		Database.accessUserList(new Consumer<UserList>(){
 			public void accept(UserList ul) {
 				final String username = request.getParameter("username");
-				final String password = request.getParameter("password");
 				final String accessPolicy = request.getParameter("accessPolicy");
-				if (username == null || password == null || accessPolicy == null || password.isEmpty()) {
+				if (username == null || accessPolicy == null) {
 					errMsg.set("Request incomplete.");
-				} else if (ul.userExists(username)) { // Printer exists
+				} else if (ul.userExists(username)) {
 					errMsg.set("That user already exists.");
 				} else {
 					try {
 						AccessLevel ap = AccessLevel.valueOf(accessPolicy);
 						if (WebInterface.canModifyAccessLevel(ul, currentUser, ap)) {
-							ul.addUser(username, password.toCharArray());
+							ul.addUserTemp(username); // Add a user with a temporary password
 							ul.setAccessPolicies(username, ap);
 						} else {
 							errMsg.set("You do not have permission to add " + ap + " users.");
@@ -137,7 +150,13 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 					boolean disabled = currentUser.equals(username) || !WebInterface.canModifyAccessLevel(ul, currentUser, ul.getAccessLevel(username));
 					usersOut.append("<tr>");
 					usersOut.append("<td>"+username+"</td>");
-					usersOut.append("<td>Change Password</td>");
+					if (disabled) {
+						usersOut.append("<td> - </td>");
+					} else if (ul.hasTempPassword(username)) {
+						usersOut.append("<td>"+ul.getTempPassword(username)+"</td>");
+					} else {
+						usersOut.append("<td><button type=\"submit\" class=\"button\" name=\"request\" value=\"resetPassword"+username+"\">Reset Password</button></td>");
+					}
 					usersOut.append("<td>"+ul.getAccessLevel(username)+"</td>");
 					if (disabled) {
 						usersOut.append("<td><button class=\"button\" disabled> </button></td>");
@@ -150,7 +169,7 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 				
 				usersOut.append("<tr>");
 				usersOut.append("<td><input name=\"username\" placeholder=\"New Username\"/></td>");
-				usersOut.append("<td><input name=\"password\" placeholder=\"Temporary Password\"/></td>");
+				usersOut.append("<td>-</td>");
 				usersOut.append("<td><select name=\"accessPolicy\">"+WebInterface.getAccessPolicyOptionList(ul, currentUser)+"</select></td>");
 				usersOut.append("<td><button type=\"submit\" class=\"button\" name=\"request\" value=\"addUser\">Add New</button></td>");
 				usersOut.append("</tr>");

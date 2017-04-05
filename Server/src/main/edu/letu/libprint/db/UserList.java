@@ -49,10 +49,12 @@ public class UserList implements Serializable {
 	// I've found this format to be more suitable for serialization
 	//      than having a separate User class.
 	
+	private TreeMap<String, String> tempPasswords = null;
 	private TreeMap<String, String> passwordHashes = null;
 	private TreeMap<String, AccessLevel> accessLevels = null;
 	
 	private void init() {
+		if (tempPasswords == null) tempPasswords = new TreeMap<>();
 		if (passwordHashes == null) passwordHashes = new TreeMap<>();
 		if (accessLevels == null) accessLevels = new TreeMap<>();
 	}
@@ -81,7 +83,7 @@ public class UserList implements Serializable {
 	 * @return the number of users in this list
 	 */
 	public int size() {
-		return passwordHashes.size();
+		return accessLevels.size();
 	}
 	
 	/**
@@ -91,6 +93,16 @@ public class UserList implements Serializable {
 	 */
 	public void addUser(String username, char[] password) {
 		passwordHashes.put(username, Util.hashPassword(password));
+		accessLevels.put(username, AccessLevel.Default);
+	}
+	
+	/**
+	 * Add a new user with default access policies and a temporary password (to be set by user later)
+	 * @param username A unique username
+	 * @param password Plaintext temporary password
+	 */
+	public void addUserTemp(String username) {
+		tempPasswords.put(username, Util.generateTempPassword());
 		accessLevels.put(username, AccessLevel.Default);
 	}
 	
@@ -109,6 +121,7 @@ public class UserList implements Serializable {
 	 * @param username
 	 */
 	public void removeUser(String username) {
+		tempPasswords.remove(username);
 		passwordHashes.remove(username);
 		accessLevels.remove(username);
 	}
@@ -117,6 +130,7 @@ public class UserList implements Serializable {
 	 * Erase this list
 	 */
 	public void clear() {
+		tempPasswords.clear();
 		passwordHashes.clear();
 		accessLevels.clear();
 	}
@@ -126,16 +140,26 @@ public class UserList implements Serializable {
 	 * @return A set of usernames
 	 */
 	public Set<String> getUsernames() {
-		return passwordHashes.keySet();
+		return accessLevels.keySet();
 	}
 	
 	/**
-	 * Use to change the user's password
+	 * Use to set the user's password
 	 * @param username
 	 * @param password A plaintext password
 	 */
-	public void setPassword(String username, char[] password) {
+	public void setHashedPassword(String username, char[] password) {
 		passwordHashes.put(username, Util.hashPassword(password));
+		tempPasswords.remove(username);
+	}
+	
+	/**
+	 * Reset a user back to a temporary password
+	 * @param username
+	 */
+	public void resetPassword(String username) {
+		passwordHashes.remove(username);
+		tempPasswords.put(username, Util.generateTempPassword());
 	}
 	
 	/**
@@ -153,7 +177,7 @@ public class UserList implements Serializable {
 	 * @return Whether the user exists or not
 	 */
 	public boolean userExists(String username) {
-		return passwordHashes.containsKey(username);
+		return accessLevels.containsKey(username);
 	}
 	
 	/**
@@ -163,7 +187,29 @@ public class UserList implements Serializable {
 	 * @return True if the password matches
 	 */
 	public boolean passwordMatches(String username, char[] password) {
-		return Util.verifyPassword(password, passwordHashes.get(username));
+		if (tempPasswords.containsKey(username)) {
+			return new String(password).equals(tempPasswords.get(username));
+		} else {
+			return Util.verifyPassword(password, passwordHashes.get(username));
+		}
+	}
+	
+	/**
+	 * Check if a user has not set their password yet
+	 * @param username
+	 * @return True if the temp password is still in place
+	 */
+	public boolean hasTempPassword(String username) {
+		return tempPasswords.containsKey(username);
+	}
+	
+	/**
+	 * Return the user's temporary password
+	 * @param username
+	 * @return
+	 */
+	public String getTempPassword(String username) {
+		return tempPasswords.get(username);
 	}
 	
 	/**

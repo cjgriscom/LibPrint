@@ -15,6 +15,7 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 
 	final MutableProperty<String> errMsg = MutableProperty.newProperty("");
 	final MutableProperty<Boolean> valid = MutableProperty.newProperty(false);
+	final MutableProperty<String> resetPassword = MutableProperty.newProperty("");
 	final String req = request.getParameter("request");
 	
 	if (req.equals("configure")) {
@@ -66,9 +67,54 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 			
 
 			Util.wipe(password); // Zero out password
+		} else {
+			errMsg.set("Please fill in all fields.");
 		}
 		
 		
+	} else if (req.equals("resetPassword")) {
+		if (WebInterface.validateJSPSession(request.getSession(), errMsg, false, false)) {
+			resetPassword.set("?resetPassword=true"); // Redirect to reset page
+			final String username = (String) session.getAttribute("user");
+			
+			final char[] password = request.getParameter("password").toCharArray();
+			final String newPassword = request.getParameter("setpassword");
+			final String newPassword2 = request.getParameter("setpassword2");
+			
+			final HttpSession finalSession = session;
+			
+			if (username != null && password != null && newPassword != null && newPassword2 != null && !newPassword.isEmpty()) {
+				Database.accessUserList(new Consumer<UserList>() {public void accept(final UserList userList) {
+					
+					if (userList.userExists(username)) {
+						if (userList.passwordMatches(username, password)) {
+							if (!newPassword.equals(newPassword2)) {
+								errMsg.set("The passwords do not match.");
+							} else {
+								userList.setHashedPassword(username, newPassword.toCharArray());
+								
+								// Log out user
+								finalSession.removeAttribute("user");
+								resetPassword.set(""); // Redirect to index
+								errMsg.set("Now log in with your new password...");
+							}
+						} else {
+							errMsg.set("The current password was incorrect.");
+						}
+					} else {
+						errMsg.set("User not recognized.");
+					}
+					
+					
+				}}, true);
+
+				Util.wipe(password); // Zero out password
+			} else {
+				errMsg.set("Please fill in all fields.");
+			}
+		} else {
+			errMsg.set("You are not logged in.");
+		}
 	} else if (req.equals("logout")) {
 		session.removeAttribute("user");
 		response.sendRedirect("index.jsp");
@@ -91,7 +137,10 @@ if ("POST".equalsIgnoreCase(request.getMethod()) && request.getParameter("reques
 			
 		}
 	}
-	response.sendRedirect("index.jsp" + (errMsg.equals("") ? "" : "?error=" + Util.sanitizeURL(errMsg.get())));
+	String errorAppend;
+	if (resetPassword.get().isEmpty()) errorAppend = "?error=";
+	else errorAppend = "&error=";
+	response.sendRedirect("index.jsp" + resetPassword.get() + (errMsg.equals("") ? "" : errorAppend + Util.sanitizeURL(errMsg.get())));
 	return;
 }
 
@@ -179,7 +228,50 @@ if (!Database.isDomainCodeSet()) {
 	<br><br>
 	<input name="password" type="password" placeholder="Password" style="width:40%; height:30px;"/>
 	<br><br>
-	<button type="submit" style="width:40%; height:30px;">Log In</button>
+	<button type="submit" class="button" style="width:30%; height:30px;">Log In</button>
+	</form>
+	</div>
+	<br><br><br><br><br><br><br><br><br>
+	</div>
+	</div>
+</body>
+
+
+<% } else if (WebInterface.hasTempPassword(session) || request.getParameter("resetPassword") != null) { 
+%>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="mystyle.css">
+	<title>LibPrint - Reset Password</title>
+</head>
+
+<body>
+	<div class = "front">
+	<div class = "components">
+	<br>
+	<h1>LibPrint - Reset Password</h1>
+    <br>
+    
+	<div class="buttons" style="text-align:center;margin: 0 auto;">
+	<span style="color:red;">
+    <%    
+    if (request.getParameter("error") != null) out.println(request.getParameter("error"));
+    
+    %>
+    </span>
+	<form method="post">
+	<input name="request" type="hidden" value="resetPassword"/>
+	<input name="password" type="password" placeholder="Current Password" style="width:40%; height:30px;"/>
+	<br><br>
+	<input name="setpassword" type="password" placeholder="New Password" style="width:40%; height:30px;"/>
+	<br><br>
+	<input name="setpassword2" type="password" placeholder="Confirm Password" style="width:40%; height:30px;"/>
+	<br><br>
+	<button type="submit" class="button" style="width:30%; height:30px;">Reset Password</button>
+	</form>
+	<form method="get">
+	<br>
+	<button type="submit" class="button" style="width:30%; height:30px;">Cancel</button>
 	</form>
 	</div>
 	<br><br><br><br><br><br><br><br><br>
@@ -223,17 +315,19 @@ if (!Database.isDomainCodeSet()) {
 	</div>
 	<a class="tinyspace"> </a>
 	<div class="box" style="width:49%;">
-	<form method="post">
+	<form id="resetForm" method="post">
  		<input name="request" type="hidden" value="logout"/>
  		
- 		<button type="submit" class="button">  Logout: <%out.println(session.getAttribute("user"));%>  </button>
+ 		<a href="index.jsp?resetPassword=true" class="button" style="width:49%;float:left">  Reset Password  </a>
+		<a class="tinyspace">&nbsp;</a>
+		<a onClick="document.getElementById('resetForm').submit();" class="button" style="width:49%;float:left">  Logout: <%out.println(session.getAttribute("user"));%>  </a>
+		<a class="tinyspace">&nbsp;</a>
  	</form>
 		 
 		
 	</div>
 	</div>
 	<br><br><br>
-	<div id="ap">
 	
 <div class="box" style="width:50%;" >
 <form method="post"><input name="request" type="hidden" value="editPrinters"/>
@@ -269,18 +363,19 @@ if (!Database.isDomainCodeSet()) {
 		out.println(printersOut);
 		%>
 	</table>
+	<br>
 </form>
 </div>
-</div>
 		
-	<br><br><br><br>
+	<div>
+	
+	
 	<a id="refresh" class="button" >Refresh Print Queue</a> 
 	<br><br><br>
-	<div>
 	<table id="queue" class="responstable">
     </table>
 	
-	<br><br><br>
+	<br><br>
 	
 	<table id="hist" class="responstable">
 	</table>

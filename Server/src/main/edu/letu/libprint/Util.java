@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Base64;
 
 import com.stackoverflow.erickson.PasswordAuthentication;
@@ -23,19 +24,6 @@ public class Util {
 	
 	private static File storageRoot = null;
 	
-	
-/* C# Code
-string GenerateSecToken(string domainCode, string username, string computer) {
-    return GetBase64EncodedSHA256Hash(domainCode + ":" + username + ":" + computer);
-}
-
-string GetBase64EncodedSHA256Hash(string plaintext) {
-    using (SHA256 hash = SHA256Managed.Create()) {
-        Byte[] result = hash.ComputeHash(Encoding.UTF8.GetBytes(plaintext));
-        return Convert.ToBase64String(result);
-    }
-}
- */
 	/**
 	 * Produces a security token for authenticating the client.
 	 * @param domainCode A code supplied in the printer configuration
@@ -51,6 +39,17 @@ string GetBase64EncodedSHA256Hash(string plaintext) {
 		return Base64.getEncoder().encodeToString(hash).replaceAll("\\+", "-").replaceAll("/", "_").replaceAll("=", "");
 	}
 	
+	/**
+	 * Generate a base64 encoded random password (for user initialization)
+	 * @return
+	 */
+	public static String generateTempPassword() {
+		SecureRandom random = new SecureRandom();
+		byte[] bytes = new byte[9];
+		random.nextBytes(bytes);
+		return Base64.getUrlEncoder().encodeToString(bytes);
+	}
+
 	/**
 	 * Hashes the given char array
 	 * @param plaintext

@@ -72,8 +72,8 @@ function buildHtmlTable(selector, myList, buttons) {
 			if (cellValue == null) cellValue = "";
 			row$.append($('<td/>').html(cellValue));
 		}
-		if (buttons) row$.append($('<td/>').html("<a href='#' onclick='acceptPrint("+myList[i].ID+",true) ' id='prb"+rownum+"' class='button bgre'> Print </a>"));
-		if (buttons) row$.append($('<td/>').html("<a href='#' onclick='acceptPrint("+myList[i].ID+",false)' id='cab"+rownum+"' class='button bred'> Cancel </a>"));
+		if (buttons) row$.append($('<td/>').html("<a onclick='acceptPrint("+myList[i].ID+",true) ' id='prb"+rownum+"' class='button bgre'> Print </a>"));
+		if (buttons) row$.append($('<td/>').html("<a onclick='acceptPrint("+myList[i].ID+",false)' id='cab"+rownum+"' class='button bred'> Cancel </a>"));
 		rownum++;
 		$(selector).append(row$);
 	}
