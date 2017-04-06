@@ -64,6 +64,7 @@
             this.Name = "PrintError";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PrintError";
+            this.TopMost = true;
             this.ResumeLayout(false);
 
         }

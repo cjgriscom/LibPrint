@@ -114,6 +114,7 @@
             this.Name = "PrinterSelect";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Select Printer";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.PrinterSelect_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -74,6 +74,7 @@
             this.Name = "ConfirmationWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Confirmation";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.ConfirmationWindow_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
