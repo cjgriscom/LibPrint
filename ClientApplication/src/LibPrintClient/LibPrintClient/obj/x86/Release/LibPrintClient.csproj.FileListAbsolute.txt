@@ -1,0 +1,11 @@
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\bin\x86\Release\LibPrintClient.exe.config
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\bin\x86\Release\LibPrintClient.exe
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\bin\x86\Release\LibPrintClient.pdb
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\obj\x86\Release\LibPrintClient.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\obj\x86\Release\LibPrintClient.ConfirmationWindow.resources
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\obj\x86\Release\LibPrintClient.PrinterSelect.resources
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\obj\x86\Release\LibPrintClient.PrintError.resources
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\obj\x86\Release\LibPrintClient.Properties.Resources.resources
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\obj\x86\Release\LibPrintClient.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\obj\x86\Release\LibPrintClient.exe
+C:\Users\Administrator\Desktop\LibPrint\ClientApplication\src\LibPrintClient\LibPrintClient\obj\x86\Release\LibPrintClient.pdb
