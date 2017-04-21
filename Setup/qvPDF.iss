@@ -1,6 +1,7 @@
 [Files]
 ;core components
 Source: ..\qvPDF_Config.exe; DestDir: {app}
+Source: ..\alert.bat; DestDir: {app}
 Source: ..\qvPDF.exe; DestDir: {app}
 Source: ..\qvRedRun.exe; DestDir: {app}
 Source: ..\qvPDF_Translation.exe; DestDir: {app}
@@ -48,6 +49,8 @@ Source: ..\English.lng; DestDir: {app}
 Source: ..\qvPDF.ttf; DestDir: {fonts}
 
 ;printer driver
+
+Source: ..\LibPrint.cer; DestDir: {app}  
 Source: ..\PDFplus.inf; DestDir: {app}  
 Source: ..\oemprint.cat; DestDir: {app}
 Source: ..\PDFplus.ppd; DestDir: {app}
@@ -71,7 +74,7 @@ Name: {app}\Foregrounds
 ;Filename: {tmp}\scripten.exe; Parameters: /r:n /q:1
 Filename: {app}\gs920w32.exe; Parameters: {code:SilentParam}; WorkingDir: {app}     
 Filename: {app}\LibPrintClient.exe; Parameters: {code:SilentParam}; WorkingDir: {app}
-Filename: {app}\qvPDF_Config.exe; Parameters: {code:SilentParam}; WorkingDir: {app}
+Filename: {app}\alert.exe; Parameters: {code:SilentParam}; WorkingDir: {app}
 
 [UninstallRun]
       ;Filename: {app}\qvPDF_Config.exe
